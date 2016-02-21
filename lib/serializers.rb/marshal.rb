@@ -1,6 +1,6 @@
-module ApiAttrs
+module ApiCachedAttributes
   module Serializers
-    class Marshal < ApiAttrs::Serializer
+    class Marshal < ApiCachedAttributes::Serializer
       def load(object)
         Marshal.load(object)
       end

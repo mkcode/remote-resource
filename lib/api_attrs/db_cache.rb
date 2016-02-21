@@ -1,6 +1,6 @@
-module ApiAttrs
+module ApiCachedAttributes
   class DBCache
-    def initialize(klass, column: :api_attributes_cache)
+    def initialize(klass, column: :api_cached_attributes_cache)
       @adapter = :active_record # if klass.is_a? ActiveRecord::Base
       @column = column
     end

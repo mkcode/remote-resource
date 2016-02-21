@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'api_attrs/version'
+require 'api_cached_attributes/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "api_attrs"
-  spec.version       = ApiAttrs::VERSION
+  spec.name          = "api_cached_attributes"
+  spec.version       = ApiCachedAttributes::VERSION
   spec.authors       = ["Chris Ewald"]
   spec.email         = ["chrisewald@gmail.com"]
 

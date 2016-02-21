@@ -1,3 +1,3 @@
-module ApiAttrs
+module ApiCachedAttributes
   VERSION = "0.1.0"
 end

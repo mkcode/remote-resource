@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe ApiAttrs do
+describe ApiCachedAttributes do
   it 'has a version number' do
-    expect(ApiAttrs::VERSION).not_to be nil
+    expect(ApiCachedAttributes::VERSION).not_to be nil
   end
 
   it 'does something useful' do

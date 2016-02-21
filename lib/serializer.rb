@@ -1,4 +1,4 @@
-module ApiAttrs
+module ApiCachedAttributes
   class UnImplemntedError < StandardError; end;
 
   class Serializer
