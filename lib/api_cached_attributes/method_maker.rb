@@ -3,8 +3,8 @@ require_relative './lookup_service'
 module ApiCachedAttributes
   class ApiReadOnlyMethod < StandardError; end;
 
-  # Our humble method maker
-  class MethodMaker
+  # Our humble lookup service attacher
+  class LookupServiceAttacher
     def initialize(base_class, options)
       @base_class = base_class
       @options = options
