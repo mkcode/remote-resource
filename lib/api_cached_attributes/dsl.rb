@@ -17,7 +17,7 @@ module ApiCachedAttributes
     end
 
     def default_response(&block)
-      named_response(:default, block)
+      named_response(:default, &block)
     end
 
     def api_cached_attr(method, named_response = :default)
