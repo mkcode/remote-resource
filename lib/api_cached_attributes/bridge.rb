@@ -6,8 +6,8 @@ module ApiCachedAttributes
     def api_cached_attributes(which_klass, options = {})
       options[:scope] = Array(options[:scope])
       klass = ApiCachedAttributes.get_attributes_class(which_klass)
-      maker = LookupServiceAttacher.new(klass, options)
-      maker.define_methods_on(self)
+      attacher = LookupServiceAttacher.new(klass, options)
+      attacher.define_methods_on(self)
     end
   end
 end
