@@ -1,4 +1,4 @@
-require_relative './method_maker'
+require_relative './lookup_service_attacher'
 
 module ApiCachedAttributes
   # Our humble bridge
