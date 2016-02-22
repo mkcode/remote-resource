@@ -16,6 +16,10 @@ module ApiCachedAttributes
     def self.inherited(subclass)
       ApiCachedAttributes.register_attributes_class(subclass)
     end
+
+    def self.underscore
+      name.underscore
+    end
   end
 end
 
