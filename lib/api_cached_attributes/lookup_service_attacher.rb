@@ -29,8 +29,8 @@ module ApiCachedAttributes
           end
 
           def #{method}=(other)
-            msg = "`#{method}` was created by the `ApiCachedAttributes` gem, which "
-            msg += "only supports allows for getters from the API. Though, you "
+            msg = "`#{method}` was created by the `ApiCachedAttributes` gem, "
+            msg += "which only supports API getters. Although, you "
             msg += "may override this method on `#{target_class.name}`."
             fail ApiCachedAttributes::ApiReadOnlyMethod.new(msg)
           end
