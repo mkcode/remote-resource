@@ -8,11 +8,12 @@ module ApiCachedAttributes
     def initialize(base_class, options)
       @base_class = base_class
       @options = options
-      @evaluator = Evaluator.new(base_class)
+      @evaluator = Evaluator.new(@base_class, @options)
     end
 
-    def get(method, named_response = :default)
+    def get(method, scope, named_response = :default)
       # key = key_for(method, named_response)
+      @evaluator.client_scope = scope
       response = @evaluator.response(named_response)
       response.send(method.to_sym)
     end

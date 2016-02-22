@@ -1,17 +1,16 @@
 module ApiCachedAttributes
   # Our humble lookup service
   class Evaluator
-    def initialize(base_class)
+    attr_accessor :client_scope
+
+    def initialize(base_class, options = {})
       @base_class = base_class
+      @options = options
       @client_scope = {}
     end
 
-    def set_client_scope(hash)
-      @client_scope = hash
-    end
-
     def client
-      @base_class.client_proc.call(@client_scope)
+      @base_class.client_proc.call(client_scope)
     end
 
     def response(name)
