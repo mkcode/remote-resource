@@ -1,4 +1,4 @@
-require_relative './db_cache_attacher'
+require_relative './db_cache_factory'
 require_relative './attribute_method_attacher'
 
 module ApiCachedAttributes

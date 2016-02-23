@@ -3,7 +3,7 @@ require_relative './db_cache'
 module ApiCachedAttributes
   class UnsupportedDatabase < StandardError; end
 
-  class DBCacheAttacher
+  class DBCacheFactory
     def initialize(base_class, options)
       @base_class = base_class
       @options = options

@@ -1,6 +1,6 @@
 require_relative './attribute_method_resolver'
 require_relative './evaluator'
-require_relative './db_cache_attacher'
+require_relative './db_cache_factory'
 
 module ApiCachedAttributes
   class ApiReadOnlyMethod < StandardError; end;
@@ -18,8 +18,8 @@ module ApiCachedAttributes
     def attach_to(target_class)
       method_resolver = AttributeMethodResolver.new(@base_class, @options)
       method_resolver.evaluator = Evaluator.new(@base_class, @options)
-      db_cache_attacher = DBCacheAttacher.new(@base_class, @options)
-      method_resolver.db_cache = db_cache_attacher.create_for_class target_class
+      db_cache_factory = DBCacheFactory.new(@base_class, @options)
+      method_resolver.db_cache = db_cache_factory.create_for_class target_class
 
       target_class.instance_variable_set(method_resolver_var, method_resolver)
       target_class.send(:include, make_attribute_methods_module(target_class))
