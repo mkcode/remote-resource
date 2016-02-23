@@ -5,3 +5,6 @@ gemspec
 
 gem 'spirit_hands'
 gem 'octokit'
+
+gem 'activerecord'
+gem 'pg'
