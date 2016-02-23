@@ -3,13 +3,15 @@ require_relative './db_cache'
 
 module ApiCachedAttributes
   # Our humble lookup service
-  class LookupService
+  class AttributeMethodResolver
     attr_reader :key_prefix
+    attr_accessor :evaluator, :db_cache
 
     def initialize(base_class, options)
       @base_class = base_class
       @options = options
-      @evaluator = Evaluator.new(@base_class, @options)
+      @evaluator = nil
+      @db_cache = nil
     end
 
     def get(method, scope, named_resource = :default)
