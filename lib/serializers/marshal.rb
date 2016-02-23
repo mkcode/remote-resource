@@ -1,6 +1,8 @@
+require_relative '../serializer'
+
 module ApiCachedAttributes
   module Serializers
-    class Marshal < ApiCachedAttributes::Serializer
+    class MarshalSerializer < Serializer
       def load(object)
         Marshal.load(object)
       end
