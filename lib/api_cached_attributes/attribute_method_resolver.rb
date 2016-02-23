@@ -16,10 +16,18 @@ module ApiCachedAttributes
 
     def get(method, scope, named_resource = :default, target_instance)
       key = key_for(method, scope, named_resource)
-      binding.pry
+      @db_cache.target_instance = target_instance
+      value = @db_cache.read_key(key)
+      if value
+        puts 'DB HIT'
+        return value
+      end
+      puts 'DB MISS'
       @evaluator.client_scope = scope
       resource = @evaluator.resource(named_resource)
-      resource.send(method.to_sym)
+      value = resource.send(method.to_sym)
+      @db_cache.write_key(key, value)
+      value
     end
 
     def key_prefix
