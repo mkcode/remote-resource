@@ -1,4 +1,5 @@
 require_relative './evaluator'
+require_relative './db_cache'
 
 module ApiCachedAttributes
   # Our humble lookup service
