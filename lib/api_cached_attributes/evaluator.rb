@@ -13,11 +13,11 @@ module ApiCachedAttributes
       @base_class.client_proc.call(client_scope)
     end
 
-    def response(name)
-      if response = @base_class.responses[name]
-        response.call(client)
+    def resource(name)
+      if resource = @base_class.resources[name]
+        resource.call(client)
       else
-        fail ArgumentError.new("there is no response named #{name} on #{name}.")
+        fail ArgumentError.new("there is no resource named #{name} on #{name}.")
       end
     end
   end

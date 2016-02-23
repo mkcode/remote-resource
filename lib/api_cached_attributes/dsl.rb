@@ -1,7 +1,7 @@
 module ApiCachedAttributes
   # Our humble DSL
   module DSL
-    attr_reader :client_proc, :responses, :cached_attributes
+    attr_reader :client_proc, :resources, :cached_attributes
 
     def client(&block)
       if block
@@ -9,22 +9,22 @@ module ApiCachedAttributes
       end
     end
 
-    def named_response(name, &block)
+    def named_resource(name, &block)
       if block
-        @responses ||= {}
-        @responses[name] = block
+        @resources ||= {}
+        @resources[name] = block
       else
         fail ArgumentError, "must supply a block"
       end
     end
 
-    def default_response(&block)
-      named_response(:default, &block)
+    def default_resource(&block)
+      named_resource(:default, &block)
     end
 
-    def api_cached_attr(method, named_response = :default)
+    def api_cached_attr(method, named_resource = :default)
       @cached_attributes ||= {}
-      @cached_attributes[method] = named_response
+      @cached_attributes[method] = named_resource
     end
   end
 end

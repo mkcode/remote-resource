@@ -11,19 +11,19 @@ module ApiCachedAttributes
       @evaluator = Evaluator.new(@base_class, @options)
     end
 
-    def get(method, scope, named_response = :default)
-      # key = key_for(method, named_response)
+    def get(method, scope, named_resource = :default)
+      # key = key_for(method, named_resource)
       @evaluator.client_scope = scope
-      response = @evaluator.response(named_response)
-      response.send(method.to_sym)
+      resource = @evaluator.resource(named_resource)
+      resource.send(method.to_sym)
     end
 
     def key_prefix
       @base_class.underscore
     end
 
-    def key_for(method, named_response = :default)
-      "#{@key_prefix}/#{named_response}-method"
+    def key_for(method, named_resource = :default)
+      "#{@key_prefix}/#{named_resource}-method"
     end
   end
 end
