@@ -14,8 +14,9 @@ module ApiCachedAttributes
       @db_cache = nil
     end
 
-    def get(method, scope, named_resource = :default)
+    def get(method, scope, named_resource = :default, target_instance)
       key = key_for(method, scope, named_resource)
+      binding.pry
       @evaluator.client_scope = scope
       resource = @evaluator.resource(named_resource)
       resource.send(method.to_sym)

@@ -37,7 +37,7 @@ module ApiCachedAttributes
             end
             self.class
                 .instance_variable_get(:#{method_resolver_var.to_s})
-                .get(:#{method}, scope, :#{value})
+                .get(:#{method}, scope, :#{value}, self)
           end
 
           def #{method}=(other)
