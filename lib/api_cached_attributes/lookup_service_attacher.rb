@@ -25,7 +25,7 @@ module ApiCachedAttributes
             end
             self.class
                 .instance_variable_get(:#{lookup_service_var.to_s})
-                .get(:#{method}, scope)
+                .get(:#{method}, scope, :#{value})
           end
 
           def #{method}=(other)

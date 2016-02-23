@@ -13,6 +13,8 @@ module ApiCachedAttributes
       if block
         @responses ||= {}
         @responses[name] = block
+      else
+        fail ArgumentError, "must supply a block"
       end
     end
 
@@ -22,7 +24,7 @@ module ApiCachedAttributes
 
     def api_cached_attr(method, named_response = :default)
       @cached_attributes ||= {}
-      @cached_attributes[method] = {}
+      @cached_attributes[method] = named_response
     end
   end
 end
