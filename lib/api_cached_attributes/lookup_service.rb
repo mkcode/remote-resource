@@ -13,7 +13,8 @@ module ApiCachedAttributes
     end
 
     def get(method, scope, named_resource = :default)
-      # key = key_for(method, named_resource)
+      key = key_for(method, scope, named_resource)
+
       @evaluator.client_scope = scope
       resource = @evaluator.resource(named_resource)
       resource.send(method.to_sym)
@@ -23,8 +24,10 @@ module ApiCachedAttributes
       @base_class.underscore
     end
 
-    def key_for(method, named_resource = :default)
-      "#{@key_prefix}/#{named_resource}-method"
+    def key_for(method, scope, named_resource = :default)
+      scope_part = scope.map{ |k,v| "#{k}=#{v}" }.join('&')
+      # "#{@key_prefix}/#{scope_part}/#{named_resource}/#{method}"
+      [key_prefix, scope_part, named_resource, method].join('/')
     end
   end
 end
