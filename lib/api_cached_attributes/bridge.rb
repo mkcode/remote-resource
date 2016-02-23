@@ -1,4 +1,3 @@
-require_relative './lookup_service_attacher'
 require_relative './db_cache_attacher'
 require_relative './attribute_method_attacher'
 
