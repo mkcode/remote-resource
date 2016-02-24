@@ -1,18 +1,17 @@
-require_relative './evaluator'
 require_relative './cache_client'
 require_relative './cache_control'
 require_relative './cached_attribute'
+require_relative './attribute_http_client'
 
 module ApiCachedAttributes
   # Our humble lookup service
   class AttributeMethodResolver
     attr_reader :key_prefix, :attributes
-    attr_accessor :evaluator, :db_cache
+    attr_accessor :db_cache
 
     def initialize(base_class, options)
       @base_class = base_class
       @options = options
-      @evaluator = nil
       @db_cache = nil
       @attributes = create_cached_attributes!
     end
@@ -30,8 +29,10 @@ module ApiCachedAttributes
     def get(method, scope, named_resource = :default, target_instance)
       key = key_for(method, scope, named_resource)
 
-      attribute(method)
-      binding.pry
+      attr = attribute(method)
+      attr.client_scope = scope
+      attr_client = AttributeHttpClient.new(attr)
+      headers = attr_client.headers_only
 
       # moc = MethodOverideClient.new( client )
       # response_headers = moc.headers_only( resources[:default] )
@@ -64,7 +65,7 @@ module ApiCachedAttributes
         puts 'DB MISS'
       end
 
-      resource = @evaluator.resource(named_resource)
+      # resource = @evaluator.resource(named_resource)
       value = resource.send(method.to_sym)
       @db_cache.write_key(key, value)
       value
