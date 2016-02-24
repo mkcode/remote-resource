@@ -23,7 +23,7 @@ module ApiCachedAttributes
 
     def create_cached_attributes!
       @base_class.cached_attributes.map do |method, value|
-        CachedAttribute.new(method, value)
+        CachedAttribute.new(method, @base_class)
       end
     end
 
