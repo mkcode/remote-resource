@@ -31,8 +31,27 @@ module ApiCachedAttributes
 
       attr = attribute(method)
       attr.client_scope = scope
+      #
+      # store = CacheStorage.new
+      # stored = store.lookup_attribute(attr)
+      # request_headers = stored.request_headers
+
       attr_client = AttributeHttpClient.new(attr)
-      headers = attr_client.headers_only
+      response_headers = attr_client.headers_only(request_headers)
+
+      # if response_headers.status == 304
+      #   store.write_attribute(stored_attr)
+      #   return stored
+      # else if response_headers.status == 200
+      #   response = attr_client.get
+      #   store.write_attribute(stored_attr)
+      #   return stored
+      # else
+      #   Error: What do we do for errors here???
+      # end
+      #
+      # remote_attr = RemoteAttribute.new(attr)
+      # if remote_attr
 
       # moc = MethodOverideClient.new( client )
       # response_headers = moc.headers_only( resources[:default] )
