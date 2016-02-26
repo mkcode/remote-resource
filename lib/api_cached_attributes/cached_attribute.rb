@@ -1,3 +1,5 @@
+require_relative './attribute_key'
+
 module ApiCachedAttributes
   class ScopeNotSet < StandardError; end
 
@@ -33,6 +35,12 @@ module ApiCachedAttributes
       else
         fail ArgumentError.new("there is no resource named #{name} on #{@name}.")
       end
+    end
+
+    def key
+      return nil if @client_scope == false
+      @key ||= AttributeKey.new(@base_class.underscore, resource_name,
+                                @client_scope, @name)
     end
   end
 end
