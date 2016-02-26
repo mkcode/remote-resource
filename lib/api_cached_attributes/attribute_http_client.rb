@@ -13,6 +13,11 @@ module ApiCachedAttributes
       @client.last_response.headers
     end
 
+    def get
+      @attribute.resource(@client)
+      @client.last_response
+    end
+
     def with_head_only_request
       client_class = @client.singleton_class
       client_class.send(:alias_method, :orig_get, :get)
