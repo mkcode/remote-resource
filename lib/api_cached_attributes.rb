@@ -3,12 +3,14 @@ require 'api_cached_attributes/db_cache'
 require 'api_cached_attributes/dsl'
 require 'api_cached_attributes/bridge'
 require 'api_cached_attributes/subclass_registration'
+require 'api_cached_attributes/storage'
 require 'active_support/concern'
 require 'active_support/core_ext/string'
 
 # doc
 module ApiCachedAttributes
   extend SubclassRegistration
+  extend StorageRegistration
 
   # the base class for defining an api.
   class Base
