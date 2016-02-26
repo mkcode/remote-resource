@@ -1,7 +1,19 @@
 module ApiCachedAttributes
-  # Our humble StorageEntry
+  # A storage entry closely resembles a network response. This seeks to
+  # counteract the impedance mismatch because API responses are done on the
+  # resource level and we want to query storages at the attribute level. Headers
+  # are also handled on the resource (response) level as well, and thus apply
+  # for many attributes.
   class StorageEntry
-    def initialize
+    def self.from_response(response)
+      new(response.headers, response.data)
+    end
+
+    attr_reader :headers, :data
+
+    def initialize(headers, data)
+      @headers = headers
+      @data = data
     end
   end
 end
