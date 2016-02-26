@@ -1,5 +1,4 @@
 require 'api_cached_attributes/version'
-require 'api_cached_attributes/db_cache'
 require 'api_cached_attributes/dsl'
 require 'api_cached_attributes/bridge'
 require 'api_cached_attributes/subclass_registration'

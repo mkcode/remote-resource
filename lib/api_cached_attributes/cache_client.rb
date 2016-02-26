@@ -1,5 +1,3 @@
-require_relative '../serializers/marshal'
-
 module ApiCachedAttributes
   # CacheClient currently only works for Octokit and Faraday::Base. The headers
   # and with_head_only_request methods may be overridden to create a CacheClient
