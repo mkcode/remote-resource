@@ -27,10 +27,8 @@ module ApiCachedAttributes
     end
 
     def get(method, scope, named_resource = :default, target_instance)
-
       attr = attribute(method)
       attr.client_scope = scope
-
 
       store_attr = AttributeStorageLookup.new(attr)
       attr_client = AttributeHttpClient.new(attr)
@@ -49,17 +47,6 @@ module ApiCachedAttributes
 
       store_attr.write(StorageEntry.from_response(attr_client.get))
       return store_attr.value
-
-    end
-
-    def key_prefix
-      @base_class.underscore
-    end
-
-    def key_for(method, scope, named_resource = :default)
-      scope_part = scope.map{ |k,v| "#{k}=#{v}" }.join('&')
-      # "#{@key_prefix}/#{scope_part}/#{named_resource}/#{method}"
-      [key_prefix, scope_part, named_resource, method].join('/')
     end
   end
 end
