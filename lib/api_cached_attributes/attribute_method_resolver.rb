@@ -38,8 +38,7 @@ module ApiCachedAttributes
       store_attr = AttributeStorageLookup.new(attribute)
       attr_client = AttributeHttpClient.new(attribute)
 
-      headers = store_attr.headers
-      if headers.size > 0
+      if store_attr.exists?
         new_headers = {
           "If-None-Match" => headers['etag'][2, 1000],
           "If-Modified-Since" => headers['last-modified']

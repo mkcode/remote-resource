@@ -16,6 +16,10 @@ module ApiCachedAttributes
       storage_entry.data[@attribute.name]
     end
 
+    def exists?
+      !!storage_entry.headers
+    end
+
     def storages
       ApiCachedAttributes.storages
     end
