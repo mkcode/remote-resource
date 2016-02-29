@@ -5,6 +5,7 @@ module ApiCachedAttributes
     module Serializers
       class MarshalSerializer < Serializer
         def load(object)
+          return nil unless object
           Marshal.load(object)
         end
 

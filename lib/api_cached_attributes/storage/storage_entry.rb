@@ -12,8 +12,8 @@ module ApiCachedAttributes
     attr_reader :headers, :data
 
     def initialize(headers, data)
-      @headers = headers
-      @data = data
+      @headers = headers || {}
+      @data = data || {}
     end
   end
 end
