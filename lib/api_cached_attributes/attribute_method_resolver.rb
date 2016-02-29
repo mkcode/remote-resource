@@ -1,7 +1,7 @@
-require_relative './cache_client'
-require_relative './cache_control'
 require_relative './cached_attribute'
 require_relative './attribute_http_client'
+require_relative './attribute_storage_lookup'
+require_relative './storage/storage_entry'
 
 module ApiCachedAttributes
   # Our humble lookup service
