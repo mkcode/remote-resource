@@ -31,24 +31,51 @@ module ApiCachedAttributes
 
       attr = attribute(method)
       attr.client_scope = scope
+
+      # Phase 1: Get request from storage via the key
       #
-      # store = CacheStorage.new
+      store_attr = AttributeStorageLookup.new(attr)
+      headers = store_attr.headers
       # stored = store.lookup_attribute(attr)
+      #   => This returns a new !!!! StorageEntry !!!!
+      #      which has request_headers methods on it
+      #
       # request_headers = stored.request_headers
+      # headers = store_attr.headers
 
+      # Phase 2: HEAD only request the HTTP endpoint (if we have cached data)
+      #          Send etag headers so 304 NOT MODIFIED response is possible
       attr_client = AttributeHttpClient.new(attr)
-      response_headers = attr_client.headers_only(request_headers)
+      new_headers = {
+        "If-None-Match" => headers['etag'][2, 1000],
+        "If-Modified-Since" => headers['last-modified']
+      }
+      header_response = attr_client.headers_only(new_headers)
+      response = attr_client.get
 
-      # if response_headers.status == 304
-      #   store.write_attribute(stored_attr)
-      #   return stored
-      # else if response_headers.status == 200
-      #   response = attr_client.get
-      #   store.write_attribute(stored_attr)
-      #   return stored
-      # else
-      #   Error: What do we do for errors here???
-      # end
+      storage_entry = StorageEntry.from_response(response)
+      store_attr.write(storage_entry)
+
+      # Phase 3: If 304 - then propagate value to all stores. (DB to redis)
+      #          If 200 - GET request for data, then propagate to all stores.
+      #          If error - Not sure (maybe read from cache?)
+      #
+      #          if response_headers.status == 304
+      #            store.write_attribute(stored_attr)
+      #            return stored
+      #          else if response_headers.status == 200
+      #            response = attr_client.get
+      #            store.write_attribute(stored_attr)
+      #            return stored
+      #          else
+      #            Error: What do we do for errors here???
+      #          end
+      #
+      ##########################################################################
+      #
+      #                             END GOOD STUFF
+      #
+      ##########################################################################
       #
       # remote_attr = RemoteAttribute.new(attr)
       # if remote_attr
@@ -56,8 +83,6 @@ module ApiCachedAttributes
       # moc = MethodOverideClient.new( client )
       # response_headers = moc.headers_only( resources[:default] )
       # cache_resolver = ResponseCache.new( response_headers )
-
-
 
       # @evaluator.client_scope = scope
       # @db_cache.target_instance = target_instance
@@ -70,7 +95,6 @@ module ApiCachedAttributes
       # response_headers = moc.headers_only( resources[:default] )
       # cache_resolver = ResponseCache.new( response_headers )
       #   => resources[:default]
-
 
       # AttributeLookupService
 
