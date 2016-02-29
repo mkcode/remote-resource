@@ -21,6 +21,7 @@ module ApiCachedAttributes
     end
 
     def write(storage_entry)
+      @storage_entry = nil
       storages.each do |storage|
         storage.write_key(@attribute.key.for_storage, storage_entry)
       end
