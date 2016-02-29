@@ -12,6 +12,10 @@ module ApiCachedAttributes
       storage_entry.data
     end
 
+    def value
+      storage_entry.data[@attribute.name]
+    end
+
     def storages
       ApiCachedAttributes.storages
     end
