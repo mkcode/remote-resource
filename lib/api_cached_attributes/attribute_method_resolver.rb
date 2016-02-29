@@ -16,22 +16,27 @@ module ApiCachedAttributes
       @attributes = create_cached_attributes!
     end
 
-    def attribute(name)
-      @attributes.detect { |attr| attr.name == name }
-    end
-
     def create_cached_attributes!
       @base_class.cached_attributes.map do |method, value|
         CachedAttribute.new(method, @base_class)
       end
     end
 
-    def get(method, scope, named_resource = :default, target_instance)
-      attr = attribute(method)
-      attr.client_scope = scope
+    def get_attribute(name)
+      @attributes.detect { |attr| attr.name == name }
+    end
 
-      store_attr = AttributeStorageLookup.new(attr)
-      attr_client = AttributeHttpClient.new(attr)
+    def get_attribute_in_scope(name, scope)
+      attr = get_attribute(name)
+      attr.client_scope = scope
+      attr
+    end
+
+    def get(method, scope, named_resource = :default, target_instance)
+      attribute = get_attribute_in_scope(method, scope)
+
+      store_attr = AttributeStorageLookup.new(attribute)
+      attr_client = AttributeHttpClient.new(attribute)
 
       headers = store_attr.headers
       if headers.size > 0
