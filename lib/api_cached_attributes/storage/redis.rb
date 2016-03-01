@@ -17,9 +17,11 @@ module ApiCachedAttributes
       end
 
       def write_key(key, storage_entry)
-        @redis.hmset key,
-                     :headers, @serializer.dump(storage_entry.headers),
-                     :data, @serializer.dump(storage_entry.data)
+        write_args = []
+        storage_entry.to_hash.each_pair do |key, value|
+          write_args.concat([key, @serializer.dump(value)]) unless value.empty?
+        end
+        @redis.hmset key, *write_args
       end
     end
   end
