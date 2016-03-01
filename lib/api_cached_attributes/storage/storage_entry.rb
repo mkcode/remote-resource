@@ -12,8 +12,15 @@ module ApiCachedAttributes
     attr_reader :headers, :data
 
     def initialize(headers, data)
-      @headers = headers || {}
-      @data = data || {}
+      @headers = headers.try(:to_hash) || {}
+      @data = data.try(:to_hash) || {}
+    end
+
+    def to_hash
+      {
+        data: @data,
+        headers: @headers
+      }
     end
   end
 end
