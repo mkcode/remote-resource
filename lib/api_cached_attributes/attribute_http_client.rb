@@ -13,8 +13,14 @@ module ApiCachedAttributes
       @client.last_response.headers
     end
 
-    def get
-      @attribute.resource(@client)
+    def get(headers = {})
+      if headers && headers.size > 0
+        with_headers_for_get_method(headers) do |client|
+          @attribute.resource(client)
+        end
+      else
+        @attribute.resource(@client)
+      end
       @client.last_response
     end
 
@@ -33,6 +39,17 @@ module ApiCachedAttributes
       client_class.send(:define_method, :head) do |url, _|
         orig_head(url, headers: headers)
       end
+    end
+
+    def with_headers_for_get_method(headers)
+      client_class = @client.singleton_class
+      client_class.send(:alias_method, :orig_get, :get)
+      client_class.send(:define_method, :get) do |url, _|
+        orig_get(url, headers: headers)
+      end
+      yield @client
+      client_class.send(:alias_method, :get, :orig_get)
+      client_class.send(:remove_method, :orig_get)
     end
   end
 end
