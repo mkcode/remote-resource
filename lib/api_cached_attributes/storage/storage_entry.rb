@@ -37,9 +37,8 @@ module ApiCachedAttributes
       if cache_control.must_revalidate?
         true
       elsif cache_control.max_age
-        expire_at = DateTime.parse(storage_entry.headers['date']) +
-                    storage_entry.cache_control.max_age.seconds
-        Time.now > expire_at
+        expire = DateTime.parse(headers['date']) + cache_control.max_age.seconds
+        Time.now > expire
       else
         false
       end
