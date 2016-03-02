@@ -3,7 +3,7 @@ require 'active_support/core_ext/module/delegation'
 
 module ApiCachedAttributes
   class AttributeStorageValue
-    delegate :exists?, :headers_for_validation, :validate, :validateable?,
+    delegate :exists?, :headers_for_validation, :validateable?,
              to: :@storage_entry, allow_nil: true
 
     def initialize(attribute)
@@ -17,6 +17,13 @@ module ApiCachedAttributes
 
     def storages
       ApiCachedAttributes.storages
+    end
+
+    def validate
+      attr_client = AttributeHttpClient.new(@attribute)
+      response = attr_client.get(headers_for_validation)
+      write(StorageEntry.from_response(response))
+      response.headers['status'] == '304 Not Modified'
     end
 
     def write(storage_entry)
