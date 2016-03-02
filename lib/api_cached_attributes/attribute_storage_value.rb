@@ -3,8 +3,8 @@ require 'active_support/core_ext/module/delegation'
 
 module ApiCachedAttributes
   class AttributeStorageValue
-    delegate :data?, :exists?, :headers_for_validation, :validateable?,
-             to: :@storage_entry, allow_nil: true
+    delegate :data?, :exists?, :expired?, :headers_for_validation,
+             :validateable?, to: :@storage_entry, allow_nil: true
 
     def initialize(attribute)
       @attribute = attribute
