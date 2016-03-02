@@ -19,6 +19,11 @@ module ApiCachedAttributes
       ApiCachedAttributes.storages
     end
 
+    def fetch
+      attr_client = AttributeHttpClient.new(@attribute)
+      write(StorageEntry.from_response(attr_client.get))
+    end
+
     def validate
       attr_client = AttributeHttpClient.new(@attribute)
       response = attr_client.get(headers_for_validation)
