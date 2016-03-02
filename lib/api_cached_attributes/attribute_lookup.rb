@@ -1,4 +1,5 @@
 require_relative './attribute_storage_value'
+require 'active_support/core_ext/hash/reverse_merge'
 
 module ApiCachedAttributes
   # Attribute lookup class. Top most level class used for looking up attributes
@@ -12,14 +13,16 @@ module ApiCachedAttributes
   #     Cache-Control header. Values true and false override this.
   class AttributeLookup
     def initialize(options = {})
-      @options = options
+      @options = options.reverse_merge({
+        validate: :cache_control
+      })
     end
 
     def find(attribute)
       store_value = AttributeStorageValue.new(attribute)
       if store_value.data?
         puts 'attr data exists'
-        if store_value.validateable? && store_value.expired?
+        if should_validate?(store_value)
           puts 'attr data expired. updating...'
           store_value.validate
         end
@@ -28,6 +31,13 @@ module ApiCachedAttributes
         store_value.fetch
       end
       store_value
+    end
+
+    private
+
+    def should_validate?(store_value)
+      return @options[:validate] unless @options[:validate] == :cache_control
+      store_value.validateable? && store_value.expired?
     end
   end
 end
