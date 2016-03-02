@@ -22,5 +22,29 @@ module ApiCachedAttributes
         headers: @headers
       }
     end
+
+    def exists?
+      headers.size > 0
+    end
+
+    def validateable?
+      headers.key?('last-modified') || headers.key?('etag')
+    end
+
+    def validate
+      attr_client = AttributeHttpClient.new(@attribute)
+      response = attr_client.get(headers_for_validation)
+      write(StorageEntry.from_response(response))
+      response.headers['status'] == '304 Not Modified'
+    end
+
+    def headers_for_validation
+      v_headers = {}
+      v_headers['If-None-Match'] = headers['etag'] if headers['etag']
+      if headers['last-modified']
+        v_headers['If-Modified-Since'] = headers['last-modified']
+      end
+      v_headers
+    end
   end
 end

@@ -1,41 +1,18 @@
 require_relative './attribute_http_client'
+require 'active_support/core_ext/module/delegation'
 
 module ApiCachedAttributes
   class AttributeStorageValue
+    delegate :exists?, :headers_for_validation, :validate, :validateable?,
+             to: :@storage_entry, allow_nil: true
+
     def initialize(attribute)
       @attribute = attribute
-    end
-
-    def headers
-      storage_entry.headers
+      @storage_entry = nil
     end
 
     def value
       storage_entry.data[@attribute.name]
-    end
-
-    def exists?
-      storage_entry.headers.size > 0
-    end
-
-    def validateable?
-      headers.key?('last-modified') || headers.key?('etag')
-    end
-
-    def validate
-      attr_client = AttributeHttpClient.new(@attribute)
-      response = attr_client.get(headers_for_validation)
-      write(StorageEntry.from_response(response))
-      response.headers['status'] == '304 Not Modified'
-    end
-
-    def headers_for_validation
-      v_headers = {}
-      v_headers['If-None-Match'] = headers['etag'] if headers['etag']
-      if headers['last-modified']
-        v_headers['If-Modified-Since'] = headers['last-modified']
-      end
-      v_headers
     end
 
     def storages
