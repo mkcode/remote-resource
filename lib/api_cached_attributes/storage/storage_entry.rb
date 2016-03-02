@@ -29,12 +29,12 @@ module ApiCachedAttributes
       @cache_control ||= CacheControl.new(headers['cache-control'])
     end
 
-    def exists?
-      headers.size > 0
+    def data?
+      !data.empty?
     end
 
-    def validateable?
-      headers.key?('last-modified') || headers.key?('etag')
+    def exists?
+      !headers.empty? || data?
     end
 
     def headers_for_validation
@@ -44,6 +44,10 @@ module ApiCachedAttributes
         v_headers['If-Modified-Since'] = headers['last-modified']
       end
       v_headers
+    end
+
+    def validateable?
+      headers.key?('last-modified') || headers.key?('etag')
     end
   end
 end
