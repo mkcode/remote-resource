@@ -1,4 +1,5 @@
 require_relative '../cache_control'
+require 'active_support/time'
 
 module ApiCachedAttributes
   # A storage entry closely resembles a network response. This seeks to
@@ -27,6 +28,21 @@ module ApiCachedAttributes
 
     def cache_control
       @cache_control ||= CacheControl.new(headers['cache-control'])
+    end
+
+    # TODO: Extract this and make it better
+    # See: https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.4
+    # Cache-Control (http 1.1) overrides Expires header (http: 1.0)
+    def expired?
+      if cache_control.must_revalidate?
+        true
+      elsif cache_control.max_age
+        expire_at = DateTime.parse(storage_entry.headers['date']) +
+                    storage_entry.cache_control.max_age.seconds
+        Time.now > expire_at
+      else
+        false
+      end
     end
 
     def data?
