@@ -35,7 +35,7 @@ module ApiCachedAttributes
     def get(method, scope, named_resource = :default, target_instance)
       attribute = get_attribute_in_scope(method, scope)
 
-      attr_lookup = AttributeLookup.new(validate: :cache_control)
+      attr_lookup = ApiCachedAttributes.lookup_method
       attr = attr_lookup.find(attribute)
       attr.value
     end
