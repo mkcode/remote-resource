@@ -1,3 +1,5 @@
+require_relative './attribute_storage_value'
+
 module ApiCachedAttributes
   # Attribute lookup class. Top most level class used for looking up attributes
   # across storages and remotely over http.
