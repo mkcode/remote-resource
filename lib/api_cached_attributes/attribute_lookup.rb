@@ -14,7 +14,7 @@ module ApiCachedAttributes
     end
 
     def find(attribute)
-      store_value = AttributeStorageLookup.new(attribute)
+      store_value = AttributeStorageValue.new(attribute)
       store_value.validate
       store_value
     end

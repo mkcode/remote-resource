@@ -1,7 +1,7 @@
 require_relative './attribute_http_client'
 
 module ApiCachedAttributes
-  class AttributeStorageLookup
+  class AttributeStorageValue
     def initialize(attribute)
       @attribute = attribute
     end
