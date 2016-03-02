@@ -16,6 +16,16 @@ module ApiCachedAttributes
       @attributes = create_cached_attributes!
     end
 
+    def get(method, scope, named_resource = :default, target_instance)
+      attribute = get_attribute_in_scope(method, scope)
+
+      attr_lookup = ApiCachedAttributes.lookup_method
+      attr = attr_lookup.find(attribute)
+      attr.value
+    end
+
+    private
+
     def create_cached_attributes!
       @base_class.cached_attributes.map do |method, value|
         CachedAttribute.new(method, @base_class)
@@ -30,14 +40,6 @@ module ApiCachedAttributes
       attr = get_attribute(name)
       attr.client_scope = scope
       attr
-    end
-
-    def get(method, scope, named_resource = :default, target_instance)
-      attribute = get_attribute_in_scope(method, scope)
-
-      attr_lookup = ApiCachedAttributes.lookup_method
-      attr = attr_lookup.find(attribute)
-      attr.value
     end
   end
 end
