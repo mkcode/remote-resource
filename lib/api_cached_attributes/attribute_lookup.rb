@@ -17,7 +17,16 @@ module ApiCachedAttributes
 
     def find(attribute)
       store_value = AttributeStorageValue.new(attribute)
-      store_value.validate
+      if store_value.data?
+        puts 'attr data exists'
+        if store_value.validateable? && store_value.expired?
+          puts 'attr data expired. updating...'
+          store_value.validate
+        end
+      else
+        puts 'attr data does not exist. fetching...'
+        store_value.fetch
+      end
       store_value
     end
   end
