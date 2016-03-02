@@ -1,4 +1,3 @@
-require_relative '../storage'
 require_relative './storage_entry'
 require_relative './serializers/marshal'
 
