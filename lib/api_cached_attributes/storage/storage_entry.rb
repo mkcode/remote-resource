@@ -1,3 +1,5 @@
+require_relative '../cache_control'
+
 module ApiCachedAttributes
   # A storage entry closely resembles a network response. This seeks to
   # counteract the impedance mismatch because API responses are done on the
@@ -21,6 +23,10 @@ module ApiCachedAttributes
         data: @data,
         headers: @headers
       }
+    end
+
+    def cache_control
+      @cache_control ||= CacheControl.new(headers['cache-control'])
     end
 
     def exists?
