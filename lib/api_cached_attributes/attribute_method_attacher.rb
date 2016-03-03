@@ -1,8 +1,6 @@
 require_relative './attribute_method_resolver'
 
 module ApiCachedAttributes
-  class ApiReadOnlyMethod < StandardError; end;
-
   # non-anonymous namespace for our generated methods.
   class AttributeMethods < Module; end
 
@@ -36,10 +34,7 @@ module ApiCachedAttributes
           end
 
           def #{method}=(other)
-            msg = "`#{method}` was created by the `ApiCachedAttributes` gem, "
-            msg += "which only supports API getters. Although, you "
-            msg += "may override this method on `#{target_class.name}`."
-            fail ApiCachedAttributes::ApiReadOnlyMethod.new(msg)
+            fail ApiReadOnlyMethod.new('#{method}')
           end
         RUBY
       end
