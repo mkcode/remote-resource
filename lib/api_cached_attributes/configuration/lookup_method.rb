@@ -1,4 +1,4 @@
-require_relative 'attribute_lookup'
+require 'api_cached_attributes/attribute_lookup'
 
 module ApiCachedAttributes
   module Configuration
