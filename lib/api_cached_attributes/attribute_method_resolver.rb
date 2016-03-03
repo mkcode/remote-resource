@@ -13,7 +13,7 @@ module ApiCachedAttributes
       @base_class = base_class
       @options = options
       @db_cache = nil
-      @attributes = create_cached_attributes!
+      @attributes = create_attributes!
     end
 
     def get(method, scope, named_resource = :default, target_instance)
@@ -26,9 +26,9 @@ module ApiCachedAttributes
 
     private
 
-    def create_cached_attributes!
+    def create_attributes!
       @base_class.cached_attributes.map do |method, value|
-        CachedAttribute.new(method, @base_class)
+        AttributeSpecification.new(method, @base_class)
       end
     end
 
