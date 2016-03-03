@@ -17,6 +17,15 @@ module ApiCachedAttributes
     end
     alias_method :method, :name
 
+    def to_hash
+      {
+        name: @name,
+        resource: resource_name,
+        base_class: @base_class.underscore,
+        key: key.to_s
+      }
+    end
+
     def resource_name
       @base_class.cached_attributes[@name]
     end
