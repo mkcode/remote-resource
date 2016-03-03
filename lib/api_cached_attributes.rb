@@ -17,15 +17,17 @@ module ApiCachedAttributes
     extend ApiCachedAttributes::DSL
     extend ActiveSupport::DescendantsTracker
 
-    def self.find_descendant(which_class)
-      descendants.detect do |descendant|
-        [descendant.underscore, descendant.underscore.sub('_attributes', '')]
-          .include? which_class.to_s
+    class << self
+      def find_descendant(which_class)
+        descendants.detect do |descendant|
+          [descendant.underscore, descendant.underscore.sub('_attributes', '')]
+            .include? which_class.to_s
+        end
       end
-    end
 
-    def self.underscore
-      name.underscore
+      def underscore
+        name.underscore
+      end
     end
   end
 end
