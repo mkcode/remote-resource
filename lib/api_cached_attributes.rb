@@ -10,8 +10,8 @@ require 'active_support/core_ext/string'
 # doc
 module ApiCachedAttributes
   extend SubclassRegistration
-  extend StorageRegistration
-  extend LookupMethodRegistration
+  extend Configuration::Storage
+  extend Configuration::LookupMethod
 
   # the base class for defining an api.
   class Base
