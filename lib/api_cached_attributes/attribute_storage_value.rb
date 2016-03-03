@@ -1,8 +1,11 @@
 require_relative './attribute_http_client'
 require 'active_support/core_ext/module/delegation'
+require 'api_cached_attributes/notifications'
 
 module ApiCachedAttributes
   class AttributeStorageValue
+    include ApiCachedAttributes::Notifications
+
     delegate :data?, :exists?, :expired?, :headers_for_validation,
              :validateable?, to: :storage_entry
 
@@ -40,10 +43,12 @@ module ApiCachedAttributes
 
     def storage_entry
       return @storage_entry if @storage_entry
-      storages.each do |storage|
-        if storage_entry = storage.read_key(@attribute.key.for_storage)
-          @storage_entry = storage_entry
-          return @storage_entry
+      instrument('storage_lookup', attribute: @attribute) do
+        storages.each do |storage|
+          if storage_entry = storage.read_key(@attribute.key.for_storage)
+            @storage_entry = storage_entry
+            return @storage_entry
+          end
         end
       end
     end

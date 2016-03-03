@@ -1,5 +1,9 @@
+require 'api_cached_attributes/notifications'
+
 module ApiCachedAttributes
   class AttributeHttpClient
+    include ApiCachedAttributes::Notifications
+
     def initialize(attribute, client = nil)
       @attribute = attribute
       @client = client || @attribute.client
@@ -7,19 +11,23 @@ module ApiCachedAttributes
     end
 
     def headers_only(additional_headers = {})
-      with_head_only_request(additional_headers) do |client|
-        @attribute.resource(client)
+      instrument('http_head', attribute: @attribute) do
+        with_head_only_request(additional_headers) do |client|
+          @attribute.resource(client)
+        end
       end
       @client.last_response.headers
     end
 
     def get(headers = {})
-      if headers && headers.size > 0
-        with_headers_for_method(:get, headers) do |client|
-          @attribute.resource(client)
+      instrument('http_get', attribute: @attribute) do
+        if headers && headers.size > 0
+          with_headers_for_method(:get, headers) do |client|
+            @attribute.resource(client)
+          end
+        else
+          @attribute.resource(@client)
         end
-      else
-        @attribute.resource(@client)
       end
       @client.last_response
     end

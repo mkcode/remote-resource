@@ -1,5 +1,6 @@
 require_relative './attribute_storage_value'
 require 'active_support/core_ext/hash/reverse_merge'
+require 'api_cached_attributes/notifications'
 
 module ApiCachedAttributes
   # Attribute lookup class. Top most level class used for looking up attributes
@@ -12,6 +13,8 @@ module ApiCachedAttributes
   #     'cache_control', sets this according to the server returned
   #     Cache-Control header. Values true and false override this.
   class AttributeLookup
+    include ApiCachedAttributes::Notifications
+
     def initialize(options = {})
       @options = options.reverse_merge({
         validate: :cache_control
@@ -19,18 +22,23 @@ module ApiCachedAttributes
     end
 
     def find(attribute)
-      store_value = AttributeStorageValue.new(attribute)
-      if store_value.data?
-        puts 'attr data exists'
-        if should_validate?(store_value)
-          puts 'attr data expired. updating...'
-          store_value.validate
+      find_path = {}
+      instrument('find', attribute: attribute, find_path: find_path) do
+        store_value = AttributeStorageValue.new(attribute)
+        if store_value.data?
+          find_path[:exists?] = true
+          if should_validate?(store_value)
+            find_path[:should_validate?] = true
+            store_value.validate
+          else
+            find_path[:should_validate?] = false
+          end
+        else
+          find_path[:exists?] = false
+          store_value.fetch
         end
-      else
-        puts 'attr data does not exist. fetching...'
-        store_value.fetch
+        store_value
       end
-      store_value
     end
 
     private
