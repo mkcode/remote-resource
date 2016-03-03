@@ -7,12 +7,10 @@ module ApiCachedAttributes
   # Our humble lookup service
   class AttributeMethodResolver
     attr_reader :key_prefix, :attributes
-    attr_accessor :db_cache
 
     def initialize(base_class, options)
       @base_class = base_class
       @options = options
-      @db_cache = nil
       @attributes = create_attributes!
     end
 
