@@ -1,8 +1,6 @@
 require_relative './attribute_key'
 
 module ApiCachedAttributes
-  class ScopeNotSet < StandardError; end
-
   # A value object representing an attribute defined in
   # ApiCachedAttributes::Base. A CachedAttribute contains the attributes' method
   # name, its resource, and its API client that is used for lookup. It also
@@ -28,7 +26,7 @@ module ApiCachedAttributes
     end
 
     def client
-      fail ScopeNotSet if @client_scope == false
+      fail ScopeNotSet.new(@name) if @client_scope == false
       @base_class.client_proc.call(client_scope)
     end
 
