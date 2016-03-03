@@ -15,7 +15,7 @@ module ApiCachedAttributes
 
     def get(headers = {})
       if headers && headers.size > 0
-        with_headers_for_get_method(headers) do |client|
+        with_headers_for_method(:get, headers) do |client|
           @attribute.resource(client)
         end
       else
@@ -24,32 +24,30 @@ module ApiCachedAttributes
       @client.last_response
     end
 
+    private
+
+    # Internal: yield a client with the get method swapped for head.
     def with_head_only_request(headers = {})
-      head_method_partial_with_headers!(headers) if headers && headers.size > 0
-      client_class = @client.singleton_class
-      client_class.send(:alias_method, :orig_get, :get)
-      client_class.send(:alias_method, :get, :head)
-      yield @client
-      client_class.send(:alias_method, :get, :orig_get)
-    end
-
-    def head_method_partial_with_headers!(headers)
-      client_class = @client.singleton_class
-      client_class.send(:alias_method, :orig_head, :head)
-      client_class.send(:define_method, :head) do |url, _|
-        orig_head(url, headers: headers)
+      with_headers_for_method(:head, headers) do |client|
+        client_class = client.singleton_class
+        client_class.send(:alias_method, :orig_get, :get)
+        client_class.send(:alias_method, :get, :head)
+        yield client
+        client_class.send(:alias_method, :get, :orig_get)
       end
     end
 
-    def with_headers_for_get_method(headers)
+    # Internal: yield a client with headers bound on the supplied method.
+    def with_headers_for_method(method, headers)
+      old_method = "orig_#{method.to_s}".to_sym
       client_class = @client.singleton_class
-      client_class.send(:alias_method, :orig_get, :get)
-      client_class.send(:define_method, :get) do |url, _|
-        orig_get(url, headers: headers)
+      client_class.send(:alias_method, old_method, method)
+      client_class.send(:define_method, method) do |url, _|
+        send(old_method, url, headers: headers)
       end
       yield @client
-      client_class.send(:alias_method, :get, :orig_get)
-      client_class.send(:remove_method, :orig_get)
+      client_class.send(:alias_method, method, old_method)
+      client_class.send(:remove_method, old_method)
     end
   end
 end
