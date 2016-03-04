@@ -1,4 +1,4 @@
-require_relative './db_cache'
+require 'api_cached_attributes/storage/db_cache'
 
 module ApiCachedAttributes
   class UnsupportedDatabase < StandardError; end

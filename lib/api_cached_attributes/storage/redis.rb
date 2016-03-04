@@ -1,5 +1,5 @@
-require_relative './storage_entry'
-require_relative './serializers/marshal'
+require 'api_cached_attributes/storage/serializers/marshal'
+require 'api_cached_attributes/storage/storage_entry'
 
 module ApiCachedAttributes
   module Storage

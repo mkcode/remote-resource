@@ -1,4 +1,4 @@
-require_relative './attribute_method_attacher'
+require 'api_cached_attributes/attribute_method_attacher'
 
 module ApiCachedAttributes
   # Our humble bridge

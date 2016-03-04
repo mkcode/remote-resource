@@ -1,4 +1,4 @@
-require_relative './attribute_key'
+require 'api_cached_attributes/attribute_key'
 
 module ApiCachedAttributes
   # A value object representing an attribute defined in

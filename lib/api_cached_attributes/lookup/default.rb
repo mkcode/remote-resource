@@ -1,5 +1,6 @@
-require_relative '../attribute_storage_value'
 require 'active_support/core_ext/hash/reverse_merge'
+
+require 'api_cached_attributes/attribute_storage_value'
 
 module ApiCachedAttributes
   module Lookup

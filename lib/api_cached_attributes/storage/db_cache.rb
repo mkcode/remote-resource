@@ -1,4 +1,4 @@
-require_relative './serializers/marshal'
+require 'api_cached_attributes/storage/serializers/marshal'
 
 module ApiCachedAttributes
   class DBCache

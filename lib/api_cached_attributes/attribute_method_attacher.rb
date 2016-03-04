@@ -1,4 +1,4 @@
-require_relative './attribute_method_resolver'
+require 'api_cached_attributes/attribute_method_resolver'
 
 module ApiCachedAttributes
   # non-anonymous namespace for our generated methods.

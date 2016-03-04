@@ -1,7 +1,4 @@
-require_relative './attribute_specification'
-require_relative './attribute_http_client'
-require_relative './lookup/default'
-require_relative './storage/storage_entry'
+require 'api_cached_attributes/attribute_specification'
 require 'api_cached_attributes/notifications'
 
 module ApiCachedAttributes
