@@ -2,10 +2,13 @@ require_relative './attribute_specification'
 require_relative './attribute_http_client'
 require_relative './attribute_lookup'
 require_relative './storage/storage_entry'
+require 'api_cached_attributes/notifications'
 
 module ApiCachedAttributes
   # Our humble lookup service
   class AttributeMethodResolver
+    include ApiCachedAttributes::Notifications
+
     attr_reader :key_prefix, :attributes
 
     def initialize(base_class, options)
@@ -18,8 +21,10 @@ module ApiCachedAttributes
       attribute = get_attribute_in_scope(method, scope)
 
       attr_lookup = ApiCachedAttributes.lookup_method
-      attr = attr_lookup.find(attribute)
-      attr.value
+      lookup_name = attr_lookup.class.name
+      instrument_attribute('find', attribute, lookup_method: lookup_name) do
+        attr_lookup.find(attribute).value
+      end
     end
 
     private
