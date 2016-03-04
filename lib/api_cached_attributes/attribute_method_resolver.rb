@@ -18,7 +18,7 @@ module ApiCachedAttributes
     end
 
     def get(method, scope, named_resource = :default, target_instance)
-      attribute = get_attribute_in_scope(method, scope)
+      attribute = get_copied_attribute_with_scope(method, scope)
 
       attr_lookup = ApiCachedAttributes.lookup_method
       lookup_name = attr_lookup.class.name
@@ -35,12 +35,14 @@ module ApiCachedAttributes
       end
     end
 
-    def get_attribute(name)
+    def find_attribute(name)
       @attributes.detect { |attr| attr.name == name }
     end
 
-    def get_attribute_in_scope(name, scope)
-      attr = get_attribute(name)
+    # Internal: dup the attribute and set the new scope on it. This ensures that
+    # nothing set on an attribute of the same previously will be carried over.
+    def get_copied_attribute_with_scope(name, scope)
+      attr = find_attribute(name).dup
       attr.client_scope = scope
       attr
     end
