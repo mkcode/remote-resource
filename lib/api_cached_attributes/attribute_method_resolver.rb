@@ -1,6 +1,6 @@
 require_relative './attribute_specification'
 require_relative './attribute_http_client'
-require_relative './attribute_lookup'
+require_relative './lookup/default'
 require_relative './storage/storage_entry'
 require 'api_cached_attributes/notifications'
 
