@@ -44,7 +44,7 @@ module ApiCachedAttributes
       if resource = @base_class.resources[resource_name]
         resource.call(override_client || client)
       else
-        fail ArgumentError.new("there is no resource named #{name} on #{@name}.")
+        fail ArgumentError, "there is no resource `#{name}` on #{base_class}."
       end
     end
 
