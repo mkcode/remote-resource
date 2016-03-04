@@ -22,7 +22,7 @@ module ApiCachedAttributes
         name: @name,
         resource: resource_name,
         base_class: @base_class.underscore,
-        key: key.to_s
+        location: location
       }
     end
 
@@ -46,6 +46,10 @@ module ApiCachedAttributes
       else
         fail ArgumentError.new("there is no resource named #{name} on #{@name}.")
       end
+    end
+
+    def location
+      "#{@base_class.short_name}##{@name}"
     end
 
     def key

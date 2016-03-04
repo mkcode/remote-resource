@@ -20,13 +20,21 @@ module ApiCachedAttributes
     class << self
       def find_descendant(which_class)
         descendants.detect do |descendant|
-          [descendant.underscore, descendant.underscore.sub('_attributes', '')]
-            .include? which_class.to_s
+          [descendant.underscore.to_sym, descendant.short_sym]
+            .include? which_class.to_sym
         end
       end
 
       def underscore
         name.underscore
+      end
+
+      def short_name
+        name.sub('Attributes', '')
+      end
+
+      def short_sym
+        short_name.underscore.to_sym
       end
     end
   end
