@@ -11,7 +11,7 @@ module ApiCachedAttributes
     end
 
     def headers_only(additional_headers = {})
-      instrument('http_head', attribute: @attribute) do
+      instrument_attribute('http_head', @attribute) do
         with_head_only_request(additional_headers) do |client|
           @attribute.resource(client)
         end
@@ -20,7 +20,7 @@ module ApiCachedAttributes
     end
 
     def get(headers = {})
-      instrument('http_get', attribute: @attribute) do
+      instrument_attribute('http_get', @attribute) do
         if headers && headers.size > 0
           with_headers_for_method(:get, headers) do |client|
             @attribute.resource(client)

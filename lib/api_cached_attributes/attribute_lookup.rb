@@ -23,7 +23,7 @@ module ApiCachedAttributes
 
     def find(attribute)
       find_path = {}
-      instrument('find', attribute: attribute, find_path: find_path) do
+      instrument_attribute('find', attribute, find_path: find_path) do
         store_value = AttributeStorageValue.new(attribute)
         if store_value.data?
           find_path[:exists?] = true

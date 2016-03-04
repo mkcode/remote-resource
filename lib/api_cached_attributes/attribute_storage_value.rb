@@ -43,7 +43,7 @@ module ApiCachedAttributes
 
     def storage_entry
       return @storage_entry if @storage_entry
-      instrument('storage_lookup', attribute: @attribute) do
+      instrument_attribute('storage_lookup', @attribute) do
         storages.each do |storage|
           if storage_entry = storage.read_key(@attribute.key.for_storage)
             @storage_entry = storage_entry
