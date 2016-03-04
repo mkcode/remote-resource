@@ -17,7 +17,7 @@ module ApiCachedAttributes
       end
 
       def default_lookup_method
-        AttributeLookup.new
+        Lookup::Default.new
       end
     end
   end
