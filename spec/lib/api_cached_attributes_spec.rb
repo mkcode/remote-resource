@@ -18,8 +18,10 @@ end
 
 describe ApiCachedAttributes::Base do
   describe '.find_descendant' do
-    before { base_class 'GithubUser' }
-    after  { ActiveSupport::DescendantsTracker.clear }
+    before do
+      ActiveSupport::DescendantsTracker.clear
+      base_class 'GithubUser'
+    end
 
     it 'returns an ApiCachedAttributes::Base class descendant' do
       descendant = ApiCachedAttributes::Base.find_descendant(:github_user)
