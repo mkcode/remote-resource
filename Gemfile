@@ -8,3 +8,4 @@ gem 'octokit'
 
 gem 'activerecord'
 gem 'pg'
+gem 'guard-rspec', require: false
