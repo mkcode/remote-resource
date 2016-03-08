@@ -21,7 +21,7 @@ module ApiCachedAttributes
     def make_attribute_methods_module(target_class)
       attribute_methods_module = AttributeMethods.new
 
-      @base_class.cached_attributes.each_pair do |method, value|
+      @base_class.attributes.each_pair do |method, value|
         attribute_methods_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{method}
             scope = {}

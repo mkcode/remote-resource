@@ -27,7 +27,7 @@ module ApiCachedAttributes
     end
 
     def resource_name
-      @base_class.cached_attributes[@name]
+      @base_class.attributes[@name]
     end
 
     # nil is a possible valid value for @client_scope when there is no scope

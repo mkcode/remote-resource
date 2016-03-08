@@ -47,17 +47,17 @@ describe ApiCachedAttributes::DSL do
     end
   end
 
-  describe '.api_cached_attr' do
-    it 'sets the named method to resource in the @cached_attributes hash' do
-      subject.api_cached_attr(:description, :repository)
-      expect(subject.ivar_get(:@cached_attributes)[:description])
+  describe '.attribute' do
+    it 'sets the named method to resource in the @attributes hash' do
+      subject.attribute(:description, :repository)
+      expect(subject.ivar_get(:@attributes)[:description])
         .to eq(:repository)
     end
 
     context 'when no second argument is given' do
-      it 'sets the named method to default in the @cached_attributes hash' do
-        subject.api_cached_attr(:login)
-        expect(subject.ivar_get(:@cached_attributes)[:login])
+      it 'sets the named method to default in the @attributes hash' do
+        subject.attribute(:login)
+        expect(subject.ivar_get(:@attributes)[:login])
           .to eq(:default)
       end
     end

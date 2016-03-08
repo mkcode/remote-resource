@@ -1,7 +1,7 @@
 module ApiCachedAttributes
   # Our humble DSL
   module DSL
-    attr_reader :client_proc, :resources, :cached_attributes
+    attr_reader :client_proc, :resources
 
     def client(&block)
       if block
@@ -23,8 +23,11 @@ module ApiCachedAttributes
     end
 
     def attribute(method, named_resource = :default)
-      @cached_attributes ||= {}
-      @cached_attributes[method] = named_resource
+      attributes[method] = named_resource
+    end
+
+    def attributes
+      @attributes ||= {}
     end
   end
 end

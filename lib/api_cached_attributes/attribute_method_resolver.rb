@@ -27,7 +27,7 @@ module ApiCachedAttributes
     private
 
     def create_attributes!
-      @base_class.cached_attributes.map do |method, value|
+      @base_class.attributes.map do |method, value|
         AttributeSpecification.new(method, @base_class)
       end
     end
