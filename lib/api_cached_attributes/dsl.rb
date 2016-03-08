@@ -22,7 +22,7 @@ module ApiCachedAttributes
       named_resource(:default, &block)
     end
 
-    def api_cached_attr(method, named_resource = :default)
+    def attribute(method, named_resource = :default)
       @cached_attributes ||= {}
       @cached_attributes[method] = named_resource
     end
