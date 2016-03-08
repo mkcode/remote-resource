@@ -62,4 +62,21 @@ describe ApiCachedAttributes::DSL do
       end
     end
   end
+
+  describe '.attributes' do
+    context 'when no attributes were set' do
+      it 'sets the named method to resource in the @attributes hash' do
+        expect(subject.attributes).to eq({})
+      end
+    end
+
+    context 'when attributes were set' do
+      it 'returns the set attributes' do
+        subject.attribute(:login)
+        subject.attribute(:description, :repository)
+        expect(subject.attributes).to eq(login: :default,
+                                         description: :repository)
+      end
+    end
+  end
 end
