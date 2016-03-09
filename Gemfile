@@ -1,13 +1,9 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in api_cached_attributes.gemspec
-gemspec
-
-gem 'spirit_hands'
-gem 'octokit'
-
-gem 'activerecord'
+# Optional gems for local development
 gem 'pg'
-
+gem 'spirit_hands'
 gem 'guard-rspec', require: false
 gem 'terminal-notifier-guard'
+
+gemspec
