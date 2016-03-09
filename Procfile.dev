@@ -1,0 +1,5 @@
+# Local services needed during development
+#
+# Use: `foreman start -f Procfile.dev`
+
+redis: redis-server
