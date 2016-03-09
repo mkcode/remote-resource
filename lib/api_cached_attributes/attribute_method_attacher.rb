@@ -17,12 +17,12 @@ module ApiCachedAttributes
       method_resolver = AttributeMethodResolver.new(@base_class, @options)
 
       target_class.instance_variable_set(method_resolver_var, method_resolver)
-      target_class.send(:include, make_attribute_methods_module(target_class))
+      target_class.send(:include, make_attribute_methods_module)
     end
 
     private
 
-    def make_attribute_methods_module(_target_class)
+    def make_attribute_methods_module
       attribute_methods_module = AttributeMethods.new
 
       @base_class.attributes.each_pair do |method, value|
