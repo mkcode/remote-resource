@@ -3,7 +3,6 @@ require 'active_support/core_ext/module/delegation'
 require 'api_cached_attributes/attribute_http_client'
 require 'api_cached_attributes/notifications'
 
-
 module ApiCachedAttributes
   class AttributeStorageValue
     include ApiCachedAttributes::Notifications

@@ -5,7 +5,7 @@ module ApiCachedAttributes
     # Our humble logger
     module Logger
       def self.extended(klass)
-        klass.instance_variable_set(:@logger , nil)
+        klass.instance_variable_set(:@logger, nil)
       end
 
       def logger=(logger)

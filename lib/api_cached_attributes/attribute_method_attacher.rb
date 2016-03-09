@@ -18,7 +18,7 @@ module ApiCachedAttributes
       target_class.send(:include, make_attribute_methods_module(target_class))
     end
 
-    def make_attribute_methods_module(target_class)
+    def make_attribute_methods_module(_target_class)
       attribute_methods_module = AttributeMethods.new
 
       @base_class.attributes.each_pair do |method, value|
@@ -29,7 +29,7 @@ module ApiCachedAttributes
               scope[scope_method.to_sym] = send(scope_method.to_sym)
             end
             self.class
-                .instance_variable_get(:#{method_resolver_var.to_s})
+                .instance_variable_get(:#{method_resolver_var})
                 .get(:#{method}, scope, :#{value}, self)
           end
 

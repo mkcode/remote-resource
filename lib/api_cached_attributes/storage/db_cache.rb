@@ -7,7 +7,7 @@ module ApiCachedAttributes
     attr_reader :column_name
     attr_accessor :target_instance
 
-    def initialize(adapter, column_name, serializer = :marshal)
+    def initialize(_adapter, column_name, _serializer = :marshal)
       @adapter = :active_record
       @column_name = column_name.to_sym
       @serializer = Serializers::MarshalSerializer.new

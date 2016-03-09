@@ -21,7 +21,7 @@ module ApiCachedAttributes
     # the optional block acts as a filter for the log description. The block is
     # passed the payload and its return value is used as the log description.
     # The whole payload is used as the description if the block is omitted.
-    def log_action action, event, &block
+    def log_action(action, event, &block)
       payload = event.payload
       description = block ? block.call(payload) : payload
 

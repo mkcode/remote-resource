@@ -10,7 +10,7 @@ module ApiCachedAttributes
     end
 
     def scope_string
-      @scope.map{ |k,v| "#{k}=#{v}" }.join('&')
+      @scope.map { |k, v| "#{k}=#{v}" }.join('&')
     end
 
     def for_resource

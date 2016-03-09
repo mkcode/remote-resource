@@ -10,7 +10,7 @@ describe ApiCachedAttributes::DSL do
   describe '.client' do
     it 'sets the supplied block to @client_proc' do
       subject.client { 'client' }
-      expect(subject.ivar_get(:@client_proc).call()).to eq('client')
+      expect(subject.ivar_get(:@client_proc).call).to eq('client')
     end
   end
 
@@ -22,7 +22,7 @@ describe ApiCachedAttributes::DSL do
     end
 
     it 'adds the supplied block to the @resources hash' do
-      subject.named_resource(:user) { |client| client.user }
+      subject.named_resource(:user, &:user)
       expect(subject.ivar_get(:@resources)[:user].call(mock_client))
         .to eq('client_user')
     end
@@ -41,7 +41,7 @@ describe ApiCachedAttributes::DSL do
     end
 
     it 'sets the supplied block to the @resources[:default]' do
-      subject.default_resource { |client| client.user }
+      subject.default_resource(&:user)
       expect(subject.ivar_get(:@resources)[:default].call(mock_client))
         .to eq('default_user')
     end

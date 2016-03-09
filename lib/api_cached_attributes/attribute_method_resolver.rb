@@ -14,7 +14,7 @@ module ApiCachedAttributes
       @attributes = create_attributes!
     end
 
-    def get(method, scope, named_resource = :default, target_instance)
+    def get(method, scope, _named_resource = :default, _target_instance)
       attribute = get_copied_attribute_with_scope(method, scope)
 
       attr_lookup = ApiCachedAttributes.lookup_method
@@ -27,7 +27,7 @@ module ApiCachedAttributes
     private
 
     def create_attributes!
-      @base_class.attributes.map do |method, value|
+      @base_class.attributes.map do |method, _value|
         AttributeSpecification.new(method, @base_class)
       end
     end

@@ -4,9 +4,7 @@ module ApiCachedAttributes
     attr_reader :client_proc, :resources
 
     def client(&block)
-      if block
-        @client_proc = block
-      end
+      @client_proc = block if block
     end
 
     def named_resource(name, &block)
@@ -14,7 +12,7 @@ module ApiCachedAttributes
         @resources ||= {}
         @resources[name] = block
       else
-        fail ArgumentError, "must supply a block"
+        fail ArgumentError, 'must supply a block'
       end
     end
 

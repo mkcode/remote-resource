@@ -47,7 +47,7 @@ module ApiCachedAttributes
 
     # Internal: yield a client with headers bound on the supplied method.
     def with_headers_for_method(method, headers)
-      old_method = "orig_#{method.to_s}".to_sym
+      old_method = "orig_#{method}".to_sym
       client_class = @client.singleton_class
       client_class.send(:alias_method, old_method, method)
       client_class.send(:define_method, method) do |url, _|

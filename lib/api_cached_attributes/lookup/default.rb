@@ -14,19 +14,14 @@ module ApiCachedAttributes
     #     'cache_control', sets this according to the server returned
     #     Cache-Control header. Values true and false override this.
     class Default
-
       def initialize(options = {})
-        @options = options.reverse_merge({
-          validate: :cache_control
-        })
+        @options = options.reverse_merge(validate: :cache_control)
       end
 
       def find(attribute)
         store_value = AttributeStorageValue.new(attribute)
         if store_value.data?
-          if should_validate?(store_value)
-            store_value.validate
-          end
+          store_value.validate if should_validate?(store_value)
         else
           store_value.fetch
         end

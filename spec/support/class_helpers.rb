@@ -1,6 +1,6 @@
 
 
-def stub_class name, superclass = nil, &block
+def stub_class(name, superclass = nil, &block)
   stub_const(name.to_s.camelize, Class.new(superclass || Object, &block))
 end
 
