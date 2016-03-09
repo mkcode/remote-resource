@@ -1,3 +1,5 @@
+require 'active_support/core_ext/hash/reverse_merge'
+
 require 'api_cached_attributes/attribute_method_resolver'
 
 module ApiCachedAttributes
@@ -8,7 +10,7 @@ module ApiCachedAttributes
   class AttributeMethodAttacher
     def initialize(base_class, options)
       @base_class = base_class
-      @options = options
+      @options = options.reverse_merge(scope: [])
     end
 
     def attach_to(target_class)
