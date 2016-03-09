@@ -10,6 +10,12 @@ describe ApiCachedAttributes::Bridge do
         expect { subject.api_cached_attributes(:github_user) }
           .to_not raise_error
       end
+
+      it 'instructs the AttributeMethodAttacher to attach_to itself' do
+        expect_any_instance_of(ApiCachedAttributes::AttributeMethodAttacher)
+          .to receive(:attach_to).with(subject)
+        subject.api_cached_attributes(:github_user)
+      end
     end
 
     context 'when the first argument is not an existing ::Base descendant' do
