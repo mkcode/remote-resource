@@ -20,6 +20,8 @@ module ApiCachedAttributes
       target_class.send(:include, make_attribute_methods_module(target_class))
     end
 
+    private
+
     def make_attribute_methods_module(_target_class)
       attribute_methods_module = AttributeMethods.new
 
@@ -42,8 +44,6 @@ module ApiCachedAttributes
       end
       attribute_methods_module
     end
-
-    private
 
     def method_resolver_var
       "@#{@base_class.underscore}_resolver".to_sym
