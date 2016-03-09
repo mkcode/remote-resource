@@ -44,6 +44,7 @@ module ApiCachedAttributes
     def api_cached_attributes(which_klass, options = {})
       ensure_valid_options!(options)
       klass = ApiCachedAttributes::Base.find_descendant(which_klass)
+      fail BaseClassNotFound.new(which_klass) unless klass
 
       attacher = AttributeMethodAttacher.new(klass, options)
       attacher.attach_to(self)

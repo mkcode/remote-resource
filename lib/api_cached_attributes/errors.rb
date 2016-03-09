@@ -33,4 +33,20 @@ module ApiCachedAttributes
       MESSAGE
     end
   end
+
+  class BaseClassNotFound < Error
+    def initialize(which_klass)
+      @which_klass = which_klass
+    end
+
+    def message
+      msg = <<-MESSAGE.strip_heredoc
+
+        A ApiCachedAttributes::Base class descendant named `#{@which_klass}`
+        could not be found. Descendant class names are generally suffixed with
+        'Attributes' and looked up without the attributes symbol. Example: A
+        base class named 'GithubUserAttributes' is looked up with :github_user.
+      MESSAGE
+    end
+  end
 end
