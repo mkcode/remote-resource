@@ -19,7 +19,6 @@ end
 describe ApiCachedAttributes::Base do
   describe '.find_descendant' do
     before do
-      ActiveSupport::DescendantsTracker.clear
       base_class 'GithubUser'
     end
 
