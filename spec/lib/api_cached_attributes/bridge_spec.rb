@@ -9,12 +9,11 @@ describe ApiCachedAttributes::Bridge do
       it 'does not raise an error' do
         expect { subject.api_cached_attributes(:github_user) }
           .to_not raise_error
-
       end
     end
 
     context 'when the first argument is not an existing ::Base descendant' do
-      it 'raises an error' do
+      it 'raises a BaseClassNotFound error' do
         expect { subject.api_cached_attributes(:does_not_exist) }
           .to raise_error ApiCachedAttributes::BaseClassNotFound
       end
