@@ -8,7 +8,7 @@ module ApiCachedAttributes
 
   # Our humble lookup service attacher
   class AttributeMethodAttacher
-    def initialize(base_class, options)
+    def initialize(base_class, options = {})
       @base_class = base_class
       @options = options.reverse_merge(scope: [])
     end
