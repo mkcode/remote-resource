@@ -25,7 +25,7 @@ module ApiCachedAttributes
     def make_attribute_methods_module
       attribute_methods_module = AttributeMethods.new
 
-      @base_class.attributes.each_pair do |method, value|
+      @base_class.attributes.each_pair do |method, resource_name|
         attribute_methods_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{method}
             scope = {}
@@ -34,7 +34,7 @@ module ApiCachedAttributes
             end
             self.class
                 .instance_variable_get(:#{method_resolver_var})
-                .get(:#{method}, scope, :#{value}, self)
+                .get(:#{method}, scope, :#{resource_name}, self)
           end
 
           def #{method}=(other)

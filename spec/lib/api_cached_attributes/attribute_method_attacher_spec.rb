@@ -25,7 +25,7 @@ describe ApiCachedAttributes::AttributeMethodAttacher do
     end
   end
 
-  describe 'attacher defined getter methods' do
+  describe 'attacher defined methods' do
     it 'calling a getter method calls get on the method resolver' do
       method = attributes_class.attributes.keys.first
       expected_var_name = subject.send(:method_resolver_var)
