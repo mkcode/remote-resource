@@ -13,14 +13,14 @@ describe ApiCachedAttributes::AttributeMethodResolver do
       lookup_double = double()
       expect(lookup_double).to receive_message_chain('find.value')
       ApiCachedAttributes.lookup_method = lookup_double
-      subject.get(:login, '', nil, Object.new)
+      subject.get(:login, Object.new)
     end
 
     it 'instruments find' do
       expect(ActiveSupport::Notifications)
         .to receive(:instrument)
         .with('find.api_cached_attributes', any_args)
-      subject.get(:login, '', nil, Object.new)
+      subject.get(:login, Object.new)
     end
   end
 end

@@ -1,3 +1,5 @@
+require 'active_support/core_ext/hash/reverse_merge'
+
 require 'api_cached_attributes/attribute_specification'
 require 'api_cached_attributes/notifications'
 
@@ -10,12 +12,12 @@ module ApiCachedAttributes
 
     def initialize(base_class, options = {})
       @base_class = base_class
-      @options = options
       @attributes = create_attributes!
+      @options = options.reverse_merge(scope: [])
     end
 
-    def get(method, scope, _named_resource = :default, _target_instance)
-      attribute = get_copied_attribute_with_scope(method, scope)
+    def get(method, target_object)
+      attribute = get_copied_attribute_with_target_object(method, target_object)
 
       attr_lookup = ApiCachedAttributes.lookup_method
       lookup_name = attr_lookup.class.name
@@ -38,10 +40,19 @@ module ApiCachedAttributes
 
     # Internal: dup the attribute and set the new scope on it. This ensures that
     # nothing set on an attribute of the same previously will be carried over.
-    def get_copied_attribute_with_scope(name, scope)
-      attr = find_attribute(name).dup
-      attr.client_scope = scope
+    def get_copied_attribute_with_target_object(attr_name, target_object)
+      attr = find_attribute(attr_name).dup
+      attr.target_object = target_object
+      attr.client_scope = eval_client_scope(target_object)
       attr
+    end
+
+    def eval_client_scope(target_object)
+      scope = {}
+      @options[:scope].each do |scope_method|
+        scope[scope_method.to_sym] = target_object.send(scope_method.to_sym)
+      end
+      scope
     end
   end
 end

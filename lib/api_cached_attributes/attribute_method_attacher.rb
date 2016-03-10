@@ -1,5 +1,3 @@
-require 'active_support/core_ext/hash/reverse_merge'
-
 require 'api_cached_attributes/attribute_method_resolver'
 
 module ApiCachedAttributes
@@ -10,7 +8,7 @@ module ApiCachedAttributes
   class AttributeMethodAttacher
     def initialize(base_class, options = {})
       @base_class = base_class
-      @options = options.reverse_merge(scope: [])
+      @options = options
     end
 
     def attach_to(target_class)
@@ -25,16 +23,11 @@ module ApiCachedAttributes
     def make_attribute_methods_module
       attribute_methods_module = AttributeMethods.new
 
-      @base_class.attributes.each_pair do |method, resource_name|
+      @base_class.attributes.keys.each do |method|
         attribute_methods_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{method}
-            scope = {}
-            %w(#{@options[:scope].join(', ')}).each do |scope_method|
-              scope[scope_method.to_sym] = send(scope_method.to_sym)
-            end
-            self.class
-                .instance_variable_get(:#{method_resolver_var})
-                .get(:#{method}, scope, :#{resource_name}, self)
+            self.class.instance_variable_get(:#{method_resolver_var})
+                      .get(:#{method}, self)
           end
 
           def #{method}=(other)

@@ -6,9 +6,15 @@ module ApiCachedAttributes
   # attributes' method name, its resource, and its API client that is used for
   # lookup. It also calculates its `key` which is used to lookup its value in
   # storage.
+  #
+  # client_scope is evaluated outside of this object and should remain unchanged
+  # throughout its life cycle. client_scope is used in building the attribute's
+  # key and its equality. target_object on the other hand is just a reference to
+  # the object that client scope was evaluated on. It may change throughout the
+  # attribute's life cycle and is not used in determining equality.
   class AttributeSpecification
     attr_reader :name, :base_class
-    attr_accessor :client_scope
+    attr_accessor :client_scope, :target_object
 
     def initialize(name, base_class)
       @name = name
