@@ -39,7 +39,7 @@ module ApiCachedAttributes
     end
 
     # Internal: dup the attribute and set the new scope on it. This ensures that
-    # nothing set on an attribute of the same previously will be carried over.
+    # nothing set on an attribute with the same name will be carried over.
     def get_copied_attribute_with_target_object(attr_name, target_object)
       attr = find_attribute(attr_name).dup
       attr.target_object = target_object
