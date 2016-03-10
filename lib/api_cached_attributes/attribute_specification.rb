@@ -7,19 +7,19 @@ module ApiCachedAttributes
   # lookup. It also calculates its `key` which is used to lookup its value in
   # storage.
   #
-  # client_scope is evaluated outside of this object and should remain unchanged
-  # throughout its life cycle. client_scope is used in building the attribute's
-  # key and its equality. target_object on the other hand is just a reference to
-  # the object that client scope was evaluated on. It may change throughout the
-  # attribute's life cycle and is not used in determining equality.
+  # scope is evaluated outside of this object and should remain unchanged
+  # throughout its life cycle. scope is used in building the attribute's key and
+  # its equality. target_object on the other hand is just a reference to the
+  # object that scope was evaluated on. It may change throughout the attribute's
+  # life cycle and is not used in determining equality.
   class AttributeSpecification
     attr_reader :name, :base_class
-    attr_accessor :client_scope, :target_object
+    attr_accessor :scope, :target_object
 
     def initialize(name, base_class)
       @name = name
       @base_class = base_class
-      @client_scope = false
+      @scope = false
     end
     alias_method :method, :name
 
@@ -36,14 +36,14 @@ module ApiCachedAttributes
       @base_class.attributes[@name]
     end
 
-    # nil is a possible valid value for @client_scope when there is no scope
-    def client_scope?
-      @client_scope != false
+    # nil is a possible valid value for @scope when there is no scope
+    def scope?
+      @scope != false
     end
 
     def client
-      fail ScopeNotSet.new(@name) if @client_scope == false
-      @base_class.client_proc.call(client_scope)
+      fail ScopeNotSet.new(@name) if @scope == false
+      @base_class.client_proc.call(@scope)
     end
 
     def resource(override_client = nil)
@@ -59,9 +59,9 @@ module ApiCachedAttributes
     end
 
     def key
-      return nil if @client_scope == false
+      return nil if @scope == false
       @key ||= AttributeKey.new(@base_class.underscore, resource_name,
-                                @client_scope, @name)
+                                @scope, @name)
     end
   end
 end

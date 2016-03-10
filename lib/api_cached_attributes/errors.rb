@@ -12,7 +12,7 @@ module ApiCachedAttributes
       msg = <<-MESSAGE.strip_heredoc
         Undefined scope for attribute `#{@attribute_name}`. The scope is a
         required part of an attribute in order to uniquely identify it. Use
-        `client_scope=` to set the scope.
+        `scope=` to set the scope.
       MESSAGE
     end
   end

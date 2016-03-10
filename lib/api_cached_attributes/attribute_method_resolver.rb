@@ -43,11 +43,11 @@ module ApiCachedAttributes
     def get_copied_attribute_with_target_object(attr_name, target_object)
       attr = find_attribute(attr_name).dup
       attr.target_object = target_object
-      attr.client_scope = eval_client_scope(target_object)
+      attr.scope = eval_attribute_scope(target_object)
       attr
     end
 
-    def eval_client_scope(target_object)
+    def eval_attribute_scope(target_object)
       scope = {}
       @options[:scope].each do |scope_method|
         scope[scope_method.to_sym] = target_object.send(scope_method.to_sym)
