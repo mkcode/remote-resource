@@ -8,7 +8,7 @@ module ApiCachedAttributes
 
     attr_reader :key_prefix, :attributes
 
-    def initialize(base_class, options)
+    def initialize(base_class, options = {})
       @base_class = base_class
       @options = options
       @attributes = create_attributes!
