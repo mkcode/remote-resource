@@ -1,6 +1,8 @@
 notification :terminal_notifier
 
-guard :rspec, cmd: 'rspec', failed_mode: :focus, notification: true do
+ignore %r{.*/flycheck_.*}
+
+guard :rspec, cmd: 'rspec', title: 'ApiCachedAttributes Rspec' do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})          { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')       { 'spec' }
