@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ApiCachedAttributes::Bridge do
-  before  { base_class 'GithubUser' }
+  before  { stub_base_class 'GithubUser' }
   subject { Class.new.tap { |o| o.extend(described_class) } }
 
   describe '.api_cached_attributes' do

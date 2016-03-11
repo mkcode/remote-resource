@@ -19,7 +19,7 @@ end
 describe ApiCachedAttributes::Base do
   describe '.find_descendant' do
     before do
-      base_class 'GithubUser'
+      stub_base_class 'GithubUser'
     end
 
     it 'returns an ApiCachedAttributes::Base class descendant' do
@@ -39,7 +39,7 @@ describe ApiCachedAttributes::Base do
   end
 
   context 'class name convenience methods' do
-    subject { base_class 'GithubUserAttributes' }
+    subject { stub_base_class 'GithubUserAttributes' }
 
     describe '.underscore' do
       it 'returns the underscored name of the class' do

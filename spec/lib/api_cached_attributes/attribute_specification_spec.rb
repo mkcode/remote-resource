@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe ApiCachedAttributes::AttributeSpecification do
   let(:attributes_class) do
-    base_class "GithubUser" do
+    stub_base_class "GithubUser" do
+      # client { |scope| fake_octokit_client }
       default_resource(&:user)
       named_resource(:rails_repo) do |client|
         client.repo('rails/rails')

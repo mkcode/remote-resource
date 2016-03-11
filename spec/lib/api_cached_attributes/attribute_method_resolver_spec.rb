@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ApiCachedAttributes::AttributeMethodResolver do
   let(:attributes_class) do
-    base_class 'GithubUser' do
+    stub_base_class 'GithubUser' do
       attribute :login
     end
   end

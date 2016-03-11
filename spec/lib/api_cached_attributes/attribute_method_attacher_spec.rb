@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ApiCachedAttributes::AttributeMethodAttacher do
   let(:attributes_class) do
-    base_class 'GithubUser' do
+    stub_base_class 'GithubUser' do
       attribute :login
     end
   end
@@ -45,7 +45,7 @@ end
 
 describe ApiCachedAttributes::AttributeMethods do
   let(:attributes_class) do
-    base_class 'GithubUser' do
+    stub_base_class 'GithubUser' do
       attribute :login
       attribute :avatar_url
     end
