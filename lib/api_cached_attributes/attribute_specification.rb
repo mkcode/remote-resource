@@ -36,6 +36,10 @@ module ApiCachedAttributes
       @base_class.attributes[@name]
     end
 
+    def location
+      "#{@base_class.name}##{@name}"
+    end
+
     # nil is a possible valid value for @scope when there is no scope
     def scope?
       @scope != false
@@ -56,10 +60,6 @@ module ApiCachedAttributes
       else
         fail ArgumentError, "there is no resource `#{name}` on #{base_class}."
       end
-    end
-
-    def location
-      "#{@base_class.name}##{@name}"
     end
 
     def key
