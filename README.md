@@ -1,6 +1,7 @@
 # ApiCachedAttributes
 
 [![Build Status](https://travis-ci.org/mkcode/api_cached_attributes.svg?branch=master)](https://travis-ci.org/mkcode/api_cached_attributes)
+[![Code Climate](https://codeclimate.com/github/mkcode/api_cached_attributes/badges/gpa.svg)](https://codeclimate.com/github/mkcode/api_cached_attributes)
 [![Test Coverage](https://codeclimate.com/github/mkcode/api_cached_attributes/badges/coverage.svg)](https://codeclimate.com/github/mkcode/api_cached_attributes/coverage)
 [![Inline docs](http://inch-ci.org/github/mkcode/api_cached_attributes.svg?branch=master)](http://inch-ci.org/github/mkcode/api_cached_attributes)
 
