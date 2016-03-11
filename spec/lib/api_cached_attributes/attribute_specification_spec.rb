@@ -36,4 +36,40 @@ describe ApiCachedAttributes::AttributeSpecification do
       )
     end
   end
+
+  describe '#resource_name' do
+    it 'returns the resource name of the attribute set on the base_class' do
+      expect(subject.resource_name).to eq(:default)
+    end
+  end
+
+  describe '#scope?' do
+    context 'when the scope has not been set' do
+      it 'returns false' do
+        expect(subject.scope?).to eq(false)
+      end
+    end
+
+    context 'when the scope has been set' do
+      it 'returns true' do
+        subject.scope = { access_token: 'abc123' }
+        expect(subject.scope?).to eq(true)
+      end
+    end
+  end
+
+  describe '#target_object?' do
+    context 'when the target object has not been set' do
+      it 'returns false' do
+        expect(subject.target_object?).to eq(false)
+      end
+    end
+
+    context 'when the target object has been set' do
+      it 'returns true' do
+        subject.target_object = Object.new
+        expect(subject.target_object?).to eq(true)
+      end
+    end
+  end
 end

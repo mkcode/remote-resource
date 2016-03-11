@@ -41,6 +41,10 @@ module ApiCachedAttributes
       @scope != false
     end
 
+    def target_object?
+      !!target_object
+    end
+
     def client
       fail ScopeNotSet.new(@name) if @scope == false
       @base_class.client_proc.call(@scope)
