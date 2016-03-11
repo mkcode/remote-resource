@@ -1,5 +1,7 @@
 # ApiCachedAttributes
 
+[![Build Status](https://travis-ci.org/mkcode/api_cached_attributes.svg?branch=master)](https://travis-ci.org/mkcode/api_cached_attributes)
+
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/api_cached_attributes`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO: Delete this and the text above, and describe your gem
@@ -22,7 +24,32 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Setup
+
+In a initializer, like `config/initializers/api_cached_attributes.rb`
+
+```ruby
+# Setup global storages
+require 'api_cached_attributes/storage/redis'
+
+ApiCachedAttributes.storages = [
+  ApiCachedAttributes::Storage::Redis.new( Redis.new(url:nil) )
+]
+
+# Setup lookup options.
+
+lookup_method = AttributeLookup.new(
+  validate: :cache_control,
+  retry: 2,
+  validate_failure: :storage_value_and_no_error
+)
+
+lookup_method.on_error do |error|
+  Airbrake.notify(error)
+end
+
+ApiCachedAttributes.lookup = lookup_method
+```
 
 ## Development
 
