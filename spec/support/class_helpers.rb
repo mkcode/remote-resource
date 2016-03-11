@@ -15,4 +15,5 @@ def fake_octokit_client
   user_response = double()
   allow(user_response).to receive(:login).and_return('mkcode')
   allow(fake).to receive(:user).and_return(user_response)
+  fake
 end
