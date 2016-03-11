@@ -27,7 +27,7 @@ module ApiCachedAttributes
       {
         name: @name,
         resource: resource_name,
-        base_class: @base_class.underscore,
+        base_class: @base_class.short_sym,
         location: location
       }
     end
@@ -55,7 +55,7 @@ module ApiCachedAttributes
     end
 
     def location
-      "#{@base_class.short_name}##{@name}"
+      "#{@base_class.name}##{@name}"
     end
 
     def key
