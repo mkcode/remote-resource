@@ -7,6 +7,11 @@ if ENV['COVERAGE']
                        'lib/api_cached_attributes/configuration']
     add_group 'Storage', 'lib/api_cached_attributes/storage/*'
     add_group 'Lookup', 'lib/api_cached_attributes/lookup/*'
+    if ENV['CI']
+      formatter CodeClimate::TestReporter::Formatter
+    else
+      formatter SimpleCov::Formatter::HTMLFormatter
+    end
   end
 end
 
