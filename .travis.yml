@@ -9,6 +9,9 @@ script: bundle exec rake spec
 
 cache: bundler
 
+env:
+  - COVERAGE=true
+
 addons:
   code_climate:
     repo_token: 7f179c032a7cec29371c2fa22b6f929465e7501e34aa3f969687e2fdcab3791e
