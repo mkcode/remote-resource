@@ -3,11 +3,7 @@ require 'spec_helper'
 describe ApiCachedAttributes::AttributeSpecification do
   let(:attributes_class) do
     stub_base_class "GithubUser" do
-      # client { |scope| fake_octokit_client }
       default_resource(&:user)
-      named_resource(:rails_repo) do |client|
-        client.repo('rails/rails')
-      end
       attribute :login
       attribute :description, :rails_repo
     end
@@ -44,6 +40,12 @@ describe ApiCachedAttributes::AttributeSpecification do
     end
   end
 
+  describe '#location' do
+    it 'returns the attributes class name and method' do
+      expect(subject.location).to eq('GithubUserAttributes#login')
+    end
+  end
+
   describe '#scope?' do
     context 'when the scope has not been set' do
       it 'returns false' do
@@ -70,6 +72,62 @@ describe ApiCachedAttributes::AttributeSpecification do
       it 'returns true' do
         subject.target_object = Object.new
         expect(subject.target_object?).to eq(true)
+      end
+    end
+  end
+
+  describe '#client' do
+    context 'when the scope has not been set' do
+      it 'raises a ScopeNotSet error' do
+        expect { subject.client }
+          .to raise_error(ApiCachedAttributes::ScopeNotSet)
+      end
+    end
+
+    context 'when the scope has been set' do
+      it 'evaluates the set client with the scope' do
+        subject.scope = { access_token: 'abc123' }
+        attributes_class.client { |scope| scope }
+        expect(subject.client).to eq(subject.scope)
+      end
+    end
+  end
+
+  describe '#resource' do
+    context 'when the attributes specified resource does not exist' do
+      it 'raise an ArgumentError' do
+        expect { alt_subject.resource }.to raise_error(ArgumentError)
+      end
+    end
+
+    context 'when the attributes specified resource exists' do
+      it 'evaluates the set resource with the client' do
+        subject.scope = { access_token: 'abc123' }
+        fake_client = double()
+        allow(fake_client).to receive(:user).and_return('mkcode')
+        attributes_class.client { |scope| fake_client }
+        expect(subject.resource).to eq('mkcode')
+      end
+    end
+  end
+
+  describe '#key' do
+    context 'when the scope has not been set' do
+      it 'returns nil' do
+        expect(subject.key).to be_nil
+      end
+    end
+
+    context 'when the scope has been set' do
+      it 'returns an instance of AttributeKey' do
+        subject.scope = { access_token: 'abc123' }
+        expect(subject.key).to be_an(ApiCachedAttributes::AttributeKey)
+      end
+
+      it 'the returned key has the correct parameters set on it' do
+        subject.scope = { access_token: 'abc123' }
+        expect(subject.key.to_s)
+          .to eq('github_user_attributes/access_token=abc123/default/login')
       end
     end
   end
