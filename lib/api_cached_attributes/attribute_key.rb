@@ -5,7 +5,7 @@ module ApiCachedAttributes
     def initialize(prefix, named_resource, scope, method)
       @prefix = prefix
       @named_resource = named_resource
-      @scope = scope
+      @scope = scope || {}
       @method = method
     end
 
