@@ -6,6 +6,16 @@
 [![Inline docs](http://inch-ci.org/github/mkcode/api_cached_attributes.svg?branch=master)](http://inch-ci.org/github/mkcode/api_cached_attributes)
 
 Cache your API. Add resiliency and speed to the APIs your app relies on.
+Features:
+
+ * A simple DSL for resource oriented APIs.
+ * Create 'hybrid' (API and activerecord based) domain objects.
+ * Major performance gains when API responses are served from (a redis) cache.
+ * Don't fail when APIs your app relies on are momentarily down.
+ * Respect your APIs Cache-Control header. Or don't. It's up to you.
+ * Configurable logging and error reporting.
+ * Trivial to add support for your new API client.
+ * Multiple cache storage backends.
 
 ## Installation
 
