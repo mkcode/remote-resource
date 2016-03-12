@@ -22,3 +22,8 @@ require 'api_cached_attributes/storage/redis'
 require 'pry'
 
 Dir.glob('./spec/support/**/*.rb').each { |f| require f }
+
+RSpec.configure do |config|
+  config.include ClassHelpers
+  config.include ClientHelpers
+end
