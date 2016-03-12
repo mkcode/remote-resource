@@ -1,6 +1,8 @@
 require 'active_support/core_ext/module/delegation'
 
 require 'api_cached_attributes/attribute_http_client'
+require 'api_cached_attributes/storage/storage_entry'
+require 'api_cached_attributes/storage/null_storage_entry'
 require 'api_cached_attributes/notifications'
 
 module ApiCachedAttributes
@@ -46,11 +48,11 @@ module ApiCachedAttributes
       return @storage_entry if @storage_entry
       instrument_attribute('storage_lookup', @attribute) do
         storages.each do |storage|
-          if storage_entry = storage.read_key(@attribute.key.for_storage)
-            @storage_entry = storage_entry
-            return @storage_entry
+          if (storage_entry = storage.read_key(@attribute.key.for_storage))
+            return (@storage_entry = storage_entry)
           end
         end
+        return (@storage_entry = NullStorageEntry.new)
       end
     end
   end
