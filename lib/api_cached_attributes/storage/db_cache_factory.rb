@@ -29,7 +29,7 @@ module ApiCachedAttributes
     def db_cache_adapter_for(klass)
       DBCache::ADAPTERS.detect do |adapter_name|
         klass.ancestors.any? do |parent_class|
-          next unless class_name = parent_class.name
+          next unless (class_name = parent_class.name)
           class_name.split('::').first.underscore.to_sym == adapter_name
         end
       end

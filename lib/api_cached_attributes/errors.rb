@@ -9,7 +9,8 @@ module ApiCachedAttributes
     end
 
     def message
-      msg = <<-MESSAGE.strip_heredoc
+      <<-MESSAGE.strip_heredoc
+
         Undefined scope for attribute `#{@attribute_name}`. The scope is a
         required part of an attribute in order to uniquely identify it. Use
         `scope=` to set the scope.
@@ -23,7 +24,7 @@ module ApiCachedAttributes
     end
 
     def message
-      msg = <<-MESSAGE.strip_heredoc
+      <<-MESSAGE.strip_heredoc
 
         The `ApiCachedAttributes` gem creates read only methods which represent
         API values. `#{@method_name}` was defined using this gem and this error
@@ -40,7 +41,7 @@ module ApiCachedAttributes
     end
 
     def message
-      msg = <<-MESSAGE.strip_heredoc
+      <<-MESSAGE.strip_heredoc
 
         A ApiCachedAttributes::Base class descendant named `#{@which_klass}`
         could not be found. Descendant class names are generally suffixed with

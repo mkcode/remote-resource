@@ -25,7 +25,7 @@ module ApiCachedAttributes
       payload = event.payload
       description = block ? block.call(payload) : payload
 
-      if attribute = payload[:attribute]
+      if (attribute = payload[:attribute])
         subject = attribute[:location]
         action = "#{subject} #{action} (#{event.duration.round(2)}ms)"
       end

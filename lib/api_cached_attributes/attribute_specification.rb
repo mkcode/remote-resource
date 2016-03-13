@@ -55,7 +55,7 @@ module ApiCachedAttributes
     end
 
     def resource(override_client = nil)
-      if resource = @base_class.resources[resource_name]
+      if (resource = @base_class.resources[resource_name])
         resource.call(override_client || client)
       else
         fail ArgumentError, "there is no resource `#{name}` on #{base_class}."

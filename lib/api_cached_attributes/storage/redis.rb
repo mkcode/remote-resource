@@ -15,12 +15,12 @@ module ApiCachedAttributes
                          @serializer.load(redis_value['data'])
       end
 
-      def write_key(key, storage_entry)
+      def write_key(storage_key, storage_entry)
         write_args = []
         storage_entry.to_hash.each_pair do |key, value|
           write_args.concat([key, @serializer.dump(value)]) unless value.empty?
         end
-        @redis.hmset key, *write_args
+        @redis.hmset storage_key, *write_args
       end
     end
   end
