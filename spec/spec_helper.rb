@@ -1,5 +1,6 @@
 if ENV['COVERAGE']
   require 'codeclimate-test-reporter'
+  require 'simplecov-console'
   SimpleCov.start do
     add_filter '/spec/'
     add_group 'Core', [*Dir.glob('lib/*.rb'),
@@ -8,9 +9,15 @@ if ENV['COVERAGE']
     add_group 'Storage', 'lib/api_cached_attributes/storage/*'
     add_group 'Lookup', 'lib/api_cached_attributes/lookup/*'
     if ENV['CI']
-      formatter CodeClimate::TestReporter::Formatter
+      formatter SimpleCov::Formatter::MultiFormatter[
+        CodeClimate::TestReporter::Formatter,
+        SimpleCov::Formatter::Console
+      ]
     else
-      formatter SimpleCov::Formatter::HTMLFormatter
+      formatter SimpleCov::Formatter::MultiFormatter[
+        SimpleCov::Formatter::HTMLFormatter,
+        SimpleCov::Formatter::Console
+      ]
     end
   end
 end
