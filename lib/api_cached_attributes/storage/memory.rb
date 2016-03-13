@@ -12,7 +12,7 @@ module ApiCachedAttributes
       def read_key(key)
         value = @memory_value[key]
         return nil unless value.is_a? Hash
-        StorageEntry.new(value['headers'], value['data'])
+        StorageEntry.new(value[:headers], value[:data])
       end
 
       def write_key(key, storage_entry)

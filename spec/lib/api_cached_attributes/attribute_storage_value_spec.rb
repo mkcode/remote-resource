@@ -20,6 +20,13 @@ describe ApiCachedAttributes::AttributeStorageValue do
   end
   subject { described_class.new(attribute) }
 
+  describe '#value' do
+    it 'returns the value' do
+      subject.write ApiCachedAttributes::StorageEntry.new({}, {login: 'mkcode'})
+      expect(subject.value).to eq('mkcode')
+    end
+  end
+
   describe '#storages' do
     it 'returns the storages set on the main class' do
       ApiCachedAttributes.storages = ['test_storage']
