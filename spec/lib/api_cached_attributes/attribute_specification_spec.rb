@@ -3,7 +3,6 @@ require 'spec_helper'
 describe ApiCachedAttributes::AttributeSpecification do
   let(:attributes_class) do
     stub_base_class "GithubUser" do
-      default_resource(&:user)
       attribute :login
       attribute :description, :rails_repo
     end
@@ -96,17 +95,19 @@ describe ApiCachedAttributes::AttributeSpecification do
   describe '#resource' do
     context 'when the attributes specified resource does not exist' do
       it 'raise an ArgumentError' do
+        attributes_class.default_resource(&:user)
         expect { alt_subject.resource }.to raise_error(ArgumentError)
       end
     end
 
     context 'when the attributes specified resource exists' do
-      it 'evaluates the set resource with the client' do
+      it 'evaluates the set resource yielding the client and scope' do
         subject.scope = { access_token: 'abc123' }
         fake_client = double()
         allow(fake_client).to receive(:user).and_return('mkcode')
         attributes_class.client { |scope| fake_client }
-        expect(subject.resource).to eq('mkcode')
+        attributes_class.default_resource { |c, s| c.user + s[:access_token] }
+        expect(subject.resource).to eq('mkcodeabc123')
       end
     end
   end
