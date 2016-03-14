@@ -13,7 +13,7 @@ module ApiCachedAttributes
       end
 
       def lookup_method
-        @lookup_method || default_lookup_method
+        @lookup_method ||= default_lookup_method
       end
 
       def default_lookup_method

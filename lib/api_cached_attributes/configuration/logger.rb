@@ -13,7 +13,7 @@ module ApiCachedAttributes
       end
 
       def logger
-        @logger || default_logger
+        @logger ||= default_logger
       end
 
       def default_logger
