@@ -6,6 +6,7 @@ module ApiCachedAttributes
   class ScopeNotSet < Error
     def initialize(attribute_name)
       @attribute_name = attribute_name
+      super(message)
     end
 
     def message
@@ -21,6 +22,7 @@ module ApiCachedAttributes
   class ApiReadOnlyMethod < Error
     def initialize(method_name)
       @method_name = method_name
+      super(message)
     end
 
     def message
@@ -38,6 +40,7 @@ module ApiCachedAttributes
   class BaseClassNotFound < Error
     def initialize(which_klass)
       @which_klass = which_klass
+      super(message)
     end
 
     def message
