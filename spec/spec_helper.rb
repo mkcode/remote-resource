@@ -9,12 +9,12 @@ if ENV['COVERAGE']
     add_group 'Storage', 'lib/api_cached_attributes/storage/*'
     add_group 'Lookup', 'lib/api_cached_attributes/lookup/*'
     if ENV['CI']
-      formatter SimpleCov::Formatter::MultiFormatter[
+      formatter SimpleCov::Formatter::MultiFormatter.new [
         CodeClimate::TestReporter::Formatter,
         SimpleCov::Formatter::Console
       ]
     else
-      formatter SimpleCov::Formatter::MultiFormatter[
+      formatter SimpleCov::Formatter::MultiFormatter.new [
         SimpleCov::Formatter::HTMLFormatter,
         SimpleCov::Formatter::Console
       ]
