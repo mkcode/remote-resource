@@ -2,7 +2,7 @@ module ApiCachedAttributes
   class Railtie < Rails::Railtie
     ns = 'api_cached_attributes'
 
-    console do |app|
+    console do
       ApiCachedAttributes.logger = Rails.logger
     end
 
@@ -10,7 +10,7 @@ module ApiCachedAttributes
       ApiCachedAttributes.logger = Rails.logger
     end
 
-    initializer "#{ns}.extend_active_record", after: 'active_record.set_configs' do |app|
+    initializer "#{ns}.extend_active_record", after: 'active_record.set_configs' do
       ActiveRecord::Base.send(:extend, ApiCachedAttributes::Bridge)
     end
 
