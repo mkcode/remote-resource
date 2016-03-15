@@ -21,10 +21,10 @@ module ApiCachedAttributes
     end
 
     def to_hash
-      {
-        data: @data,
-        headers: @headers
-      }
+      {}.tap do |hash|
+        hash[:data] = @data unless @data.size == 0
+        hash[:headers] = @headers unless @headers.size == 0
+      end
     end
 
     def cache_control
