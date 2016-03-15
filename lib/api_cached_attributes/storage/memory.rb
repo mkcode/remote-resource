@@ -16,7 +16,11 @@ module ApiCachedAttributes
       end
 
       def write_key(key, storage_entry)
-        @memory_value[key] = storage_entry.to_hash
+        if @memory_value[key]
+          @memory_value[key].merge!(storage_entry.to_hash)
+        else
+          @memory_value[key] = storage_entry.to_hash
+        end
       end
     end
   end
