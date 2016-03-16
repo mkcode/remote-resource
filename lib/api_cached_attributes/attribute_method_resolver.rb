@@ -13,7 +13,7 @@ module ApiCachedAttributes
     def initialize(base_class, options = {})
       @base_class = base_class
       @attributes = create_attributes!
-      @options = options.reverse_merge(scope: [])
+      @options = options.reverse_merge(scope: {})
     end
 
     def get(method, target_object)
