@@ -13,7 +13,7 @@ module ApiCachedAttributes
     def initialize(base_class, options = {})
       @base_class = base_class
       @attributes = create_attributes!
-      @options = options.reverse_merge(scope: {})
+      @options = ensure_options(options)
     end
 
     def get(method, target_object)
@@ -53,6 +53,19 @@ module ApiCachedAttributes
         scope[attr_key.to_sym] = target_object.send(target_method.to_sym)
       end
       scope
+    end
+
+    def ensure_options(options)
+      if ! options[:scope]
+        options[:scope] = {}
+      elsif options[:scope].is_a? Symbol
+        options[:scope] = { options[:scope] => options[:scope] }
+      elsif options[:scope].is_a? Array
+        options[:scope] = {}.tap do |hash|
+          options[:scope].each { |method| hash[method.to_sym] = method.to_sym }
+        end
+      end
+      options
     end
   end
 end

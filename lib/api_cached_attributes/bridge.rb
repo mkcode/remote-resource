@@ -42,26 +42,11 @@ module ApiCachedAttributes
     #
     # returns nil
     def api_cached_attributes(which_klass, options = {})
-      ensure_valid_options!(options)
       klass = ApiCachedAttributes::Base.find_descendant(which_klass)
       fail BaseClassNotFound.new(which_klass) unless klass
 
       attacher = AttributeMethodAttacher.new(klass, options)
       attacher.attach_to(self)
-    end
-
-    private
-
-    def ensure_valid_options!(options)
-      if ! options[:scope]
-        options[:scope] = {}
-      elsif options[:scope].is_a? Symbol
-        options[:scope] = { options[:scope] => options[:scope] }
-      elsif options[:scope].is_a? Array
-        options[:scope] = {}.tap do |hash|
-          options[:scope].each { |method| hash[method.to_sym] = method.to_sym }
-        end
-      end
     end
   end
 end
