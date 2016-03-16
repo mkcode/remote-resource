@@ -49,8 +49,8 @@ module ApiCachedAttributes
 
     def eval_attribute_scope(target_object)
       scope = {}
-      @options[:scope].each do |scope_method|
-        scope[scope_method.to_sym] = target_object.send(scope_method.to_sym)
+      @options[:scope].each_pair do |attr_key, target_method|
+        scope[attr_key.to_sym] = target_object.send(target_method.to_sym)
       end
       scope
     end
