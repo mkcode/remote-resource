@@ -8,7 +8,7 @@ module ApiCachedAttributes
   class AttributeMethodResolver
     include ApiCachedAttributes::Notifications
 
-    attr_reader :attributes
+    attr_reader :attributes, :options
 
     def initialize(base_class, options = {})
       @base_class = base_class
