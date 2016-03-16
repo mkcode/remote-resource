@@ -53,7 +53,15 @@ module ApiCachedAttributes
     private
 
     def ensure_valid_options!(options)
-      options[:scope] = Array(options[:scope])
+      if ! options[:scope]
+        options[:scope] = {}
+      elsif options[:scope].is_a? Symbol
+        options[:scope] = { options[:scope] => options[:scope] }
+      elsif options[:scope].is_a? Array
+        options[:scope] = {}.tap do |hash|
+          options[:scope].each { |method| hash[method.to_sym] = method.to_sym }
+        end
+      end
     end
   end
 end
