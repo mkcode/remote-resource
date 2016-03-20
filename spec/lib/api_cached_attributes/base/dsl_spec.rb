@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApiCachedAttributes::DSL do
+describe ApiCachedAttributes::Dsl do
   subject do
     Class.new(ApiCachedAttributes::Base).tap do |base_class|
       base_class.send(:include, ObjectIntrospectionHelpers)

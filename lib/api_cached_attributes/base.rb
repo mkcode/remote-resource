@@ -1,11 +1,9 @@
-require 'api_cached_attributes/dsl'
-
 require 'active_support/descendants_tracker'
 
 module ApiCachedAttributes
   # the base class for defining an api.
   class Base
-    extend ApiCachedAttributes::DSL
+    extend ApiCachedAttributes::Dsl
     extend ActiveSupport::DescendantsTracker
 
     class << self
