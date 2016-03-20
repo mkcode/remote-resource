@@ -19,6 +19,7 @@ module ApiCachedAttributes
 
   autoload_under 'base' do
     autoload :Dsl
+    autoload :BaseClassMethods
   end
 
   autoload :AttributeMethodAttacher
