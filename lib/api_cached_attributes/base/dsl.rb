@@ -1,6 +1,6 @@
 module ApiCachedAttributes
   # Our humble DSL
-  module DSL
+  module Dsl
     attr_reader :client_proc, :resources
 
     def client(&block)
