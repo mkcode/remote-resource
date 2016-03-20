@@ -92,7 +92,7 @@ The are 3 parts that every API definition class needs.
 
  * __client__: You return an instance of the web client that the API uses in a block. That block yields the scope. (More on scope later.)
 
- * __ default_resource__: The resource that attributes with no second argument
+ * __default_resource__: The resource that attributes with no second argument
    use. Roughly corresponds to a web request. The block is given the client
    (which was returned from the client block above) and the scope. It then
    issues a web request and returns a response. The response object must respond
