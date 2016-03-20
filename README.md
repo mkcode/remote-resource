@@ -105,6 +105,57 @@ The are 3 parts that every API definition class needs.
    This will be mapped to a method later. Optionally takes a second symbol
    argument referring to a non-default resource.
 
+### Updating & Custom methods
+
+ApiCachedAttributes allows you to call any method that your API client defines and compose new methods from those within the Base class definition. Expanding on the above example:
+
+In `app/api_attributes/github_user_attributes`:
+
+```ruby
+class GithubUserAttributes < ApiCachedAttributes::Base
+  client { Octokit::Client.new }
+
+  default_resource { |client, scope| client.user(scope[:github_login]) }
+
+  attribute :id
+  ...
+  attribute :created_at
+
+  def markdown_summary
+    client.markdown "# A big hello to #{name}!!!"
+  end
+end
+```
+
+The above `markdown_summary` method references client, which is what is returned from the above client block. The following methods are available within a ApiCachedAttributes::Base class.
+
+ * __client__ - returns the evaluated client block.
+
+ * __resource(resource_name)__ - returns the evaluated resource block for the provided name. You may use `:default` to access the `default_resource` return value.
+
+ ...more to come...
+
+### Instantiating Api Resource Objects
+
+The above `GithubUserAttributes` example class may be instantiated on it's own. The initializer takes the scope argument as an options Hash. In the above `GithubUserAttributes` example, because in our default_resource block, we use `scope[:github_login]`, we should send a `:github_login` option into the constructor. For example:
+
+```ruby
+github_user = GithubUserAttributes.new(github_login: 'mkcode')
+```
+
+Now that we have an instance, we may call any of our custom defined methods on it.
+
+```ruby
+github_user.markdown_summary
+#=> "<h1>A big hello to Chris Ewald!!!</h1>"
+```
+
+We also may call any of our defined attributes. Ex:
+
+```ruby
+github_user.name
+#=> "Chris Ewald"
+```
 
 ### Creating hybrid domain objects
 
