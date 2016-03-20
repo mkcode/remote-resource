@@ -86,12 +86,20 @@ module ApiCachedAttributes
     def get_copied_attribute_with_target_object(attr_name, target_object)
       attr = find_attribute(attr_name).dup
       attr.target_object = target_object
-      if @options[:scope].values.all? { |ov| ov.is_a? Symbol }
+      if should_eval_attribute_scope?
         attr.scope = eval_attribute_scope(target_object)
       else
         attr.scope = @options[:scope]
       end
       attr
+    end
+
+    # Internal: Returns a Boolean indicating whether or not the scope should be
+    # looked up (evaluated on) the target_object. This allows direct values for
+    # the scope to be used, rather then references to methods on the target
+    # object.
+    def should_eval_attribute_scope?
+      @options[:scope].values.all? { |scope_value| scope_value.is_a? Symbol }
     end
 
     # Internal: Returns a hash where the values of the scope have been evaluated
