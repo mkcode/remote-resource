@@ -86,7 +86,11 @@ module ApiCachedAttributes
     def get_copied_attribute_with_target_object(attr_name, target_object)
       attr = find_attribute(attr_name).dup
       attr.target_object = target_object
-      attr.scope = eval_attribute_scope(target_object)
+      if @options[:scope].values.all? { |ov| ov.is_a? Symbol }
+        attr.scope = eval_attribute_scope(target_object)
+      else
+        attr.scope = @options[:scope]
+      end
       attr
     end
 
