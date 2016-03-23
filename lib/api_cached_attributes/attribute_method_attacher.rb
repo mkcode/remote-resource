@@ -40,10 +40,14 @@ module ApiCachedAttributes
     # path_to_attrs - A string representing a line of ruby code that will be
     #                 evaluated. This line is the relative path from a
     #                 target_class instance to the object that holds the
-    #                 attributes and which `get_attribute` is defined.
+    #                 attributes and where the `get_attribute` is defined. If
+    #                 path_to_attrs is (default: self), that implies that this
+    #                 is defining methods on the Base class, because that object
+    #                 contains the `get_attribute` method.
     #
     # Returns the target_class
     def attach_to(target_class, path_to_attrs = 'self')
+      overwrite_method_warnings(target_class) unless path_to_attrs == 'self'
       target_class.send(:include, make_attribute_methods_module(path_to_attrs))
     end
 
