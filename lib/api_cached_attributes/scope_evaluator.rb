@@ -1,5 +1,7 @@
 module ApiCachedAttributes
   class ScopeEvaluator
+    attr_reader :scope
+
     def initialize(scope = nil)
       @scope = normalize_scope(scope)
     end
