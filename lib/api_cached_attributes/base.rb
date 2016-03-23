@@ -12,7 +12,7 @@ module ApiCachedAttributes
 
     def initialize(**args)
       @scope = args
-      @attributes = create_attributes!(self)
+      @attributes = create_attributes(self)
       AttributeMethodAttacher.new(self.class).attach_to(self.class)
     end
 
