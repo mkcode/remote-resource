@@ -17,7 +17,6 @@ module ApiCachedAttributes
     end
 
     def client
-      fail ScopeNotSet.new(self.class.name) if @scope == false
       self.class.client_proc.call(@scope)
     end
 
