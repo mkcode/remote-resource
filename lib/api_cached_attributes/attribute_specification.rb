@@ -14,12 +14,11 @@ module ApiCachedAttributes
   # life cycle and is not used in determining equality.
   class AttributeSpecification
     attr_reader :name, :base_class
-    attr_accessor :scope, :target_object
+    delegate :client, to: :@base_class
 
     def initialize(name, base_class)
       @name = name
       @base_class = base_class
-      @scope = false
     end
     alias_method :method, :name
 
@@ -27,44 +26,25 @@ module ApiCachedAttributes
       {
         name: @name,
         resource: resource_name,
-        base_class: @base_class.short_sym,
+        base_class: @base_class.class.short_sym,
         location: location
       }
     end
 
     def resource_name
-      @base_class.attributes[@name]
+      @base_class.class.attributes[@name]
+    end
+
+    def resource(client = nil)
+      @base_class.resource(resource_name, client)
     end
 
     def location
-      "#{@base_class.name}##{@name}"
-    end
-
-    # nil is a possible valid value for @scope when there is no scope
-    def scope?
-      @scope != false
-    end
-
-    def target_object?
-      !!target_object
-    end
-
-    def client
-      fail ScopeNotSet.new(@name) if @scope == false
-      @base_class.client_proc.call(@scope)
-    end
-
-    def resource(override_client = nil)
-      if (resource = @base_class.resources[resource_name])
-        resource.call(override_client || client, @scope)
-      else
-        fail ArgumentError, "there is no resource `#{name}` on #{base_class}."
-      end
+      "#{@base_class.class.name}##{@name}"
     end
 
     def key
-      return nil if @scope == false
-      @key ||= AttributeKey.new(@base_class.underscore, resource_name,
+      @key ||= AttributeKey.new(@base_class.class.underscore, resource_name,
                                 @scope, @name)
     end
   end

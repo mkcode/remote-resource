@@ -24,6 +24,7 @@ module ApiCachedAttributes
 
   autoload :AttributeMethodAttacher
   autoload :AttributeMethodResolver
+  autoload :AttributeSpecification
   autoload :Base
   autoload :Bridge
   autoload :LogSubscriber
