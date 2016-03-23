@@ -11,9 +11,7 @@ describe ApiCachedAttributes::AttributeStorageValue do
     end
   end
   let(:attribute) do
-    attr = ApiCachedAttributes::AttributeSpecification.new(:login, attrs_class)
-    attr.scope = nil
-    attr
+    ApiCachedAttributes::AttributeSpecification.new(:login, attrs_class.new)
   end
   before do
     ApiCachedAttributes.storages = [ApiCachedAttributes::Storage::Memory.new]
