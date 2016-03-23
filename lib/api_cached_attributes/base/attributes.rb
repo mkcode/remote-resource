@@ -4,7 +4,7 @@ module ApiCachedAttributes
     include ApiCachedAttributes::Notifications
 
     def create_attributes(base_instance)
-      base_instance.class.attributes.map do |method, _value|
+      @attributes = base_instance.class.attributes.map do |method, _value|
         AttributeSpecification.new(method, base_instance)
       end
     end
