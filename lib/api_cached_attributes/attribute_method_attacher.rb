@@ -1,5 +1,3 @@
-require 'api_cached_attributes/attribute_method_resolver'
-
 module ApiCachedAttributes
   # non-anonymous namespace for our generated methods. Mixed into the target
   # class so that introspection shows where the methods came from.
