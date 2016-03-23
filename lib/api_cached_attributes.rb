@@ -27,4 +27,5 @@ module ApiCachedAttributes
   autoload :Base
   autoload :Bridge
   autoload :LogSubscriber
+  autoload :ScopeEvaluator
 end
