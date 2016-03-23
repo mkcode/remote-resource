@@ -1,14 +1,16 @@
 require 'spec_helper'
 
 describe ApiCachedAttributes::AttributeSpecification do
-  let(:attributes_class) do
+  let(:attr_class) do
     stub_base_class "GithubUser" do
       attribute :login
-      attribute :description, :rails_repo
+      attribute :desc, :rails_repo
     end
   end
-  let(:subject)     { described_class.new(:login, attributes_class) }
-  let(:alt_subject) { described_class.new(:description, attributes_class) }
+  let(:subject) { described_class.new(:login, attr_class.new) }
+  let(:alt_subject) do
+    described_class.new(:desc, attr_class.new(access_token: 'abc123'))
+  end
 
   describe '#name (alias #method)' do
     it 'returns the name supplied to the constructor' do
@@ -17,8 +19,8 @@ describe ApiCachedAttributes::AttributeSpecification do
   end
 
   describe '#base_class' do
-    it 'returns the base_class supplied to the constructor' do
-      expect(subject.base_class).to equal(attributes_class)
+    it 'returns the base_class instance supplied to the constructor' do
+      expect(subject.base_class.class.name).to eq('GithubUserAttributes')
     end
   end
 
@@ -45,91 +47,44 @@ describe ApiCachedAttributes::AttributeSpecification do
     end
   end
 
-  describe '#scope?' do
-    context 'when the scope has not been set' do
-      it 'returns false' do
-        expect(subject.scope?).to eq(false)
-      end
-    end
-
-    context 'when the scope has been set' do
-      it 'returns true' do
-        subject.scope = { access_token: 'abc123' }
-        expect(subject.scope?).to eq(true)
-      end
-    end
-  end
-
-  describe '#target_object?' do
-    context 'when the target object has not been set' do
-      it 'returns false' do
-        expect(subject.target_object?).to eq(false)
-      end
-    end
-
-    context 'when the target object has been set' do
-      it 'returns true' do
-        subject.target_object = Object.new
-        expect(subject.target_object?).to eq(true)
-      end
-    end
-  end
-
   describe '#client' do
-    context 'when the scope has not been set' do
-      it 'raises a ScopeNotSet error' do
-        expect { subject.client }
-          .to raise_error(ApiCachedAttributes::ScopeNotSet)
-      end
-    end
-
-    context 'when the scope has been set' do
-      it 'evaluates the set client with the scope' do
-        subject.scope = { access_token: 'abc123' }
-        attributes_class.client { |scope| scope }
-        expect(subject.client).to eq(subject.scope)
-      end
+    it 'evaluates the set client with the scope' do
+      scope = { access_token: 'abc123' }
+      subject.base_class.instance_variable_set(:@scope, scope)
+      attr_class.client { |scope| scope }
+      expect(subject.client).to eq(scope)
     end
   end
 
   describe '#resource' do
     context 'when the attributes specified resource does not exist' do
       it 'raise an ArgumentError' do
-        attributes_class.default_resource(&:user)
+        attr_class.default_resource(&:user)
         expect { alt_subject.resource }.to raise_error(ArgumentError)
       end
     end
 
     context 'when the attributes specified resource exists' do
       it 'evaluates the set resource yielding the client and scope' do
-        subject.scope = { access_token: 'abc123' }
+        scope = { access_token: 'abc123' }
+        subject.base_class.instance_variable_set(:@scope, scope)
         fake_client = double()
         allow(fake_client).to receive(:user).and_return('mkcode')
-        attributes_class.client { |scope| fake_client }
-        attributes_class.default_resource { |c, s| c.user + s[:access_token] }
+        attr_class.client { |scope| fake_client }
+        attr_class.default_resource { |c, s| c.user + s[:access_token] }
         expect(subject.resource).to eq('mkcodeabc123')
       end
     end
   end
 
   describe '#key' do
-    context 'when the scope has not been set' do
-      it 'returns nil' do
-        expect(subject.key).to be_nil
-      end
+    it 'returns an instance of AttributeKey' do
+      expect(subject.key).to be_an(ApiCachedAttributes::AttributeKey)
     end
 
-    context 'when the scope has been set' do
-      it 'returns an instance of AttributeKey' do
-        subject.scope = { access_token: 'abc123' }
-        expect(subject.key).to be_an(ApiCachedAttributes::AttributeKey)
-      end
-
-      it 'the returned key has the correct parameters set on it' do
-        subject.scope = { access_token: 'abc123' }
-        expect(subject.key.to_s)
-          .to eq('github_user_attributes/access_token=abc123/default/login')
-      end
+    it 'the returned key has the correct parameters set on it' do
+      expect(alt_subject.key.to_s)
+        .to eq('github_user_attributes/access_token=abc123/rails_repo/desc')
     end
   end
 end

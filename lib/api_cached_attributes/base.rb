@@ -10,6 +10,8 @@ module ApiCachedAttributes
 
     include ApiCachedAttributes::Attributes
 
+    attr_reader :scope
+
     def initialize(**args)
       @scope = args
       create_attributes(self)
@@ -20,9 +22,9 @@ module ApiCachedAttributes
       self.class.client_proc.call(@scope)
     end
 
-    def resource(name = :default, resource_client = client)
-      if (resource = self.class.resources[name])
-        resource.call(resource_client, @scope)
+    def resource(name = :default, resource_client = nil)
+      if (attr_resource = self.class.resources[name])
+        attr_resource.call(resource_client || client, @scope)
       else
         msg = "there is no resource named `#{name}` on #{self.class.name}."
         fail ArgumentError, msg

@@ -35,8 +35,8 @@ module ApiCachedAttributes
       @base_class.class.attributes[@name]
     end
 
-    def resource(client = nil)
-      @base_class.resource(resource_name, client)
+    def resource(resource_client = nil)
+      @base_class.send(:resource, *([resource_name, resource_client].compact!))
     end
 
     def location
@@ -45,7 +45,7 @@ module ApiCachedAttributes
 
     def key
       @key ||= AttributeKey.new(@base_class.class.underscore, resource_name,
-                                @scope, @name)
+                                @base_class.scope, @name)
     end
   end
 end
