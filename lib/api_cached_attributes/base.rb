@@ -8,10 +8,12 @@ module ApiCachedAttributes
     extend ApiCachedAttributes::BaseClassMethods
     extend ApiCachedAttributes::Dsl
 
+    include ApiCachedAttributes::Attributes
+
     def initialize(**args)
       @scope = args
-      aa = AttributeMethodAttacher.new(self.class, scope: @scope)
-      aa.attach_to(self.class)
+      @attributes = create_attributes!(self)
+      AttributeMethodAttacher.new(self.class).attach_to(self.class)
     end
 
     def client

@@ -18,6 +18,7 @@ module ApiCachedAttributes
   extend Configuration::LookupMethod
 
   autoload_under 'base' do
+    autoload :Attributes
     autoload :Dsl
     autoload :BaseClassMethods
   end
