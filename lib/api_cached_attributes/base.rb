@@ -21,9 +21,9 @@ module ApiCachedAttributes
       self.class.client_proc.call(@scope)
     end
 
-    def resource(name)
+    def resource(name = :default, resource_client = client)
       if (resource = self.class.resources[name])
-        resource.call(client, @scope)
+        resource.call(resource_client, @scope)
       else
         msg = "there is no resource named `#{name}` on #{self.class.name}."
         fail ArgumentError, msg
