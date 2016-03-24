@@ -14,6 +14,7 @@ module ApiCachedAttributes
       method_name = @options[:as]
       set_associated_class(method_name, target_class)
       define_association_method(method_name, target_class)
+      self
     end
 
     private

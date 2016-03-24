@@ -119,7 +119,7 @@ module ApiCachedAttributes
     #   attribute. Instead of the method being named :email, it will now be
     #   named :gh_email.
     #
-    # Returns nil
+    # Returns an instance of AssociationBuilder.
     def has_remote(which_klass, options = {})
       klass = ApiCachedAttributes::Base.find_descendant(which_klass)
       fail BaseClassNotFound.new(which_klass) unless klass
@@ -134,12 +134,15 @@ module ApiCachedAttributes
     # the association. This is similar in theory to the object oriented
     # programming 'is_a' vs 'has_a', inheritance vs composition debate. By
     # defining the attribute methods directly on the domain object, that domain
-    # object 'is' a remote resource.
+    # object 'is' a remote resource. Note that this will only define the
+    # attribute getter methods on the target class. Additional methods defined
+    # on the Resource class will not be copied, but may still be accessed
+    # through the association method.
     #
     # Examples
     #
     #   class Repo < ActiveRecord::Base
-    #     embeds_remote :github_repo
+    #     embed_remote :github_repo
     #
     #     ...
     #   end
@@ -162,14 +165,10 @@ module ApiCachedAttributes
     #
     # Returns nil
     def embed_remote(which_klass, options = {})
-      klass = ApiCachedAttributes::Base.find_descendant(which_klass)
-      fail BaseClassNotFound.new(which_klass) unless klass
+      assoc_builder = has_remote(which_klass, options)
 
-      builder = AssociationBuilder.new(klass, options)
-      builder.associated_with(self)
-
-      attacher = AttributeMethodAttacher.new(klass, options)
-      attacher.attach_to(self, builder.options[:as].to_s)
+      attacher = AttributeMethodAttacher.new(assoc_builder.base_class, options)
+      attacher.attach_to(self, assoc_builder.options[:as].to_s)
     end
   end
 end
