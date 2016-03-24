@@ -3,6 +3,8 @@ module ApiCachedAttributes
   # target object that refers to an associated Base class. The body of that
   # method instantiates an attributes class.
   class AssociationBuilder
+    attr_reader :base_class, :options
+
     def initialize(base_class, options = {})
       @base_class = base_class
       @options = ensure_options(options)

@@ -95,20 +95,23 @@ module ApiCachedAttributes
     #   named :gh_email.
     #
     # returns nil
-    def api_cached_attributes(which_klass, options = {})
-      klass = ApiCachedAttributes::Base.find_descendant(which_klass)
-      fail BaseClassNotFound.new(which_klass) unless klass
-
-      attacher = AttributeMethodAttacher.new(klass, options)
-      attacher.attach_to(self)
-    end
-
     def has_remote(which_klass, options = {})
       klass = ApiCachedAttributes::Base.find_descendant(which_klass)
       fail BaseClassNotFound.new(which_klass) unless klass
 
       builder = AssociationBuilder.new(klass, options)
       builder.associated_with(self)
+    end
+
+    def embed_remote(which_klass, options = {})
+      klass = ApiCachedAttributes::Base.find_descendant(which_klass)
+      fail BaseClassNotFound.new(which_klass) unless klass
+
+      builder = AssociationBuilder.new(klass, options)
+      builder.associated_with(self)
+
+      attacher = AttributeMethodAttacher.new(klass, options)
+      attacher.attach_to(self, builder.options[:as].to_s)
     end
   end
 end
