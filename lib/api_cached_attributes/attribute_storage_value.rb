@@ -26,15 +26,19 @@ module ApiCachedAttributes
     end
 
     def fetch
-      attr_client = AttributeHttpClient.new(@attribute)
-      write(StorageEntry.from_response(attr_client.get))
+      @attribute.with_error_handling action: :fetch do
+        attr_client = AttributeHttpClient.new(@attribute)
+        write(StorageEntry.from_response(attr_client.get))
+      end
     end
 
     def validate
-      attr_client = AttributeHttpClient.new(@attribute)
-      response = attr_client.get(headers_for_validation)
-      write(StorageEntry.from_response(response))
-      response.headers['status'] == '304 Not Modified'
+      @attribute.with_error_handling action: :validate do
+        attr_client = AttributeHttpClient.new(@attribute)
+        response = attr_client.get(headers_for_validation)
+        write(StorageEntry.from_response(response))
+        response.headers['status'] == '304 Not Modified'
+      end
     end
 
     def write(storage_entry)

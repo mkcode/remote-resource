@@ -9,6 +9,7 @@ module ApiCachedAttributes
     extend ApiCachedAttributes::Dsl
 
     include ApiCachedAttributes::Attributes
+    include ApiCachedAttributes::Rescue
 
     attr_reader :scope
 

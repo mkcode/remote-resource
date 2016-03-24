@@ -14,7 +14,7 @@ module ApiCachedAttributes
   # life cycle and is not used in determining equality.
   class AttributeSpecification
     attr_reader :name, :base_class
-    delegate :client, to: :@base_class
+    delegate :client, :with_error_handling, to: :@base_class
 
     def initialize(name, base_class)
       @name = name

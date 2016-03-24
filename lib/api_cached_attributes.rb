@@ -21,6 +21,7 @@ module ApiCachedAttributes
     autoload :Attributes
     autoload :Dsl
     autoload :BaseClassMethods
+    autoload :Rescue
   end
 
   autoload :AssociationBuilder
