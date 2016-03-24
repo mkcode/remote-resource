@@ -6,6 +6,15 @@ module ApiCachedAttributes
       @scope = normalize_scope(scope)
     end
 
+    def evaluate_on(target_object)
+      scope = {}
+      @scope.each_pair do |attr_key, target_method|
+        scope[attr_key.to_sym] = target_object.send(target_method.to_sym)
+      end
+      scope
+    end
+
+    private
     # Internal: Returns a Boolean indicating whether or not the scope should be
     # looked up (evaluated on) the target_object. This allows direct values for
     # the scope to be used, rather then references to methods on the target
