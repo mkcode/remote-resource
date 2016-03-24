@@ -19,7 +19,6 @@ module ApiCachedAttributes
     def with_error_handling(context = {})
       yield
     rescue Exception => exception
-      # binding.pry
       rescue_with_handler(exception, context) || raise(exception)
     end
 
