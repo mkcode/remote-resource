@@ -102,5 +102,13 @@ module ApiCachedAttributes
       attacher = AttributeMethodAttacher.new(klass, options)
       attacher.attach_to(self)
     end
+
+    def has_remote(which_klass, options = {})
+      klass = ApiCachedAttributes::Base.find_descendant(which_klass)
+      fail BaseClassNotFound.new(which_klass) unless klass
+
+      builder = AssociationBuilder.new(klass, options)
+      builder.associated_with(self)
+    end
   end
 end
