@@ -23,6 +23,7 @@ module ApiCachedAttributes
     autoload :BaseClassMethods
   end
 
+  autoload :AssociationBuilder
   autoload :AttributeMethodAttacher
   autoload :AttributeSpecification
   autoload :Base
