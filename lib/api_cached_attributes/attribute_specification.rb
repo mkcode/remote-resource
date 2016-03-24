@@ -36,7 +36,7 @@ module ApiCachedAttributes
     end
 
     def resource(resource_client = nil)
-      @base_class.send(:resource, *([resource_name, resource_client].compact!))
+      @base_class.send(:resource, resource_name, resource_client)
     end
 
     def location
