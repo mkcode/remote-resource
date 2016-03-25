@@ -29,7 +29,7 @@ describe RemoteResource::Bridge do
 
     it 'creates an association method on self' do
       subject.send(test_method, :github_user)
-      expect(subject.new.github_user_attributes).to be_a(GithubUserAttributes)
+      expect(subject.new.github_user).to be_a(GithubUser)
     end
   end
 
@@ -50,7 +50,7 @@ describe RemoteResource::Bridge do
 
     it 'instructs the AttributeMethodAttacher to define methods on self' do
       expect_any_instance_of(RemoteResource::AttributeMethodAttacher)
-        .to receive(:attach_to).with(subject, 'github_user_attributes')
+        .to receive(:attach_to).with(subject, 'github_user')
       subject.embed_remote(:github_user)
     end
   end

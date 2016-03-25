@@ -20,7 +20,7 @@ describe RemoteResource::AttributeSpecification do
 
   describe '#base_class' do
     it 'returns the base_class instance supplied to the constructor' do
-      expect(subject.base_class.class.name).to eq('GithubUserAttributes')
+      expect(subject.base_class.class.name).to eq('GithubUser')
     end
   end
 
@@ -30,7 +30,7 @@ describe RemoteResource::AttributeSpecification do
         name: :login,
         resource: :default,
         base_class: :github_user,
-        location: 'GithubUserAttributes#login'
+        location: 'GithubUser#login'
       )
     end
   end
@@ -43,7 +43,7 @@ describe RemoteResource::AttributeSpecification do
 
   describe '#location' do
     it 'returns the attributes class name and method' do
-      expect(subject.location).to eq('GithubUserAttributes#login')
+      expect(subject.location).to eq('GithubUser#login')
     end
   end
 
@@ -84,7 +84,7 @@ describe RemoteResource::AttributeSpecification do
 
     it 'the returned key has the correct parameters set on it' do
       expect(alt_subject.key.to_s)
-        .to eq('github_user_attributes/access_token=abc123/rails_repo/desc')
+        .to eq('github_user/access_token=abc123/rails_repo/desc')
     end
   end
 end
