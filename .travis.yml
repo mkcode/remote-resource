@@ -14,4 +14,4 @@ env:
 
 addons:
   code_climate:
-    repo_token: 7f179c032a7cec29371c2fa22b6f929465e7501e34aa3f969687e2fdcab3791e
+    repo_token: 423daed64ecdf569121bd4b69d02dac79b01f9bb2b7270eb8498f77d744ecc19

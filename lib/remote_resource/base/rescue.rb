@@ -14,6 +14,7 @@ module RemoteResource
     # Note that it is typically 'wrong' in Ruby to rescue Exception. In this
     # case it is OK because we re raise the error if it is not handled. Inspired
     # by ActiveController.
+    # rubocop:disable Lint/RescueException
     #
     # Returns the last executed statement value.
     def with_error_handling(context = {})
@@ -21,6 +22,7 @@ module RemoteResource
     rescue Exception => exception
       rescue_with_handler(exception, context) || raise(exception)
     end
+    # rubocop:enable Lint/RescueException
 
     private
     # Internal: Override the default ActiveSupport::Rescuable behavior to allow
@@ -28,7 +30,7 @@ module RemoteResource
     # handlers are reused in different situations, and the context argument
     # allows one to change the behavior depending on which situation.
     def rescue_with_handler(exception, context = {})
-      if handler = handler_for_rescue(exception)
+      if (handler = handler_for_rescue(exception))
         case handler.arity
         when 2 then handler.call(exception, context)
         when 1 then handler.call(exception)
