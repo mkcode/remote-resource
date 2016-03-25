@@ -15,12 +15,6 @@ describe ApiCachedAttributes::AttributeMethodAttacher do
     context 'on the supplied (target) class' do
       before  { subject.attach_to(target_class) }
 
-      it 'sets an AttributeMethodResolver on the supplied class' do
-        expected_var_name = subject.send(:method_resolver_var)
-        expect(target_class.ivar_get(expected_var_name))
-          .to be_an ApiCachedAttributes::AttributeMethodResolver
-      end
-
       it 'includes the AttributeMethods on the supplied class' do
         expect(target_class.included_modules.map(&:class))
           .to include ApiCachedAttributes::AttributeMethods
@@ -28,11 +22,22 @@ describe ApiCachedAttributes::AttributeMethodAttacher do
     end
 
     context 'when overwriting a method on the target class' do
-      it 'logs a warning message' do
-        expect(ApiCachedAttributes.logger).to receive(:warn)
-        target_class = Class.new
-        target_class.send(:define_method, :login, -> {})
-        subject.attach_to(target_class)
+      context 'and the path_to_attrs is foreign (not self)' do
+        it 'logs a warning message' do
+          expect(ApiCachedAttributes.logger).to receive(:warn)
+          target_class = Class.new
+          target_class.send(:define_method, :login, -> {})
+          subject.attach_to(target_class, 'github_user')
+        end
+      end
+
+      context 'and the path_to_attrs is self' do
+        it 'does not log a warning message' do
+          expect(ApiCachedAttributes.logger).to_not receive(:warn)
+          target_class = Class.new
+          target_class.send(:define_method, :login, -> {})
+          subject.attach_to(target_class, 'self')
+        end
       end
     end
 
@@ -47,16 +52,34 @@ describe ApiCachedAttributes::AttributeMethodAttacher do
     end
   end
 
-  describe 'attacher defined methods' do
-    before  { subject.attach_to(target_class) }
+  describe 'attacher defined getter methods' do
+    context 'when defined on a foreign object' do
+      before  { subject.attach_to(target_class, 'foreign_object') }
 
-    it 'calling a getter method calls get on the method resolver' do
-      method = attributes_class.attributes.keys.first
-      expected_var_name = subject.send(:method_resolver_var)
-      resolver = target_class.ivar_get(expected_var_name)
-      expect(resolver).to receive(:get)
-      target_class.new.send(method)
+      it 'calling a getter method calls get_attribute on the path_to_attrs' do
+        method = attributes_class.attributes.keys.first
+        expect_any_instance_of(target_class)
+          .to receive_message_chain('foreign_object.get_attribute')
+          .and_return(true)
+        target_class.new.send(method)
+      end
     end
+
+    context 'when defined on self' do
+      before  { subject.attach_to(target_class, 'self') }
+
+      it 'calling a getter method calls get_attribute on the target_class' do
+        method = attributes_class.attributes.keys.first
+        expect_any_instance_of(target_class)
+          .to receive(:get_attribute)
+          .and_return(true)
+        target_class.new.send(method)
+      end
+    end
+  end
+
+  describe 'attacher defined setter methods' do
+    before  { subject.attach_to(target_class) }
 
     it 'calling a setter method raises an ApiReadOnlyMethod error' do
       getter_method = attributes_class.attributes.keys.first
@@ -77,7 +100,8 @@ describe ApiCachedAttributes::AttributeMethods do
   let(:attacher_class) do
     ApiCachedAttributes::AttributeMethodAttacher.new(attributes_class)
   end
-  subject { attacher_class.send(:make_attribute_methods_module) }
+  subject { attacher_class.send(:make_attribute_methods_module, 'self') }
+
 
   it 'has a getter method for each attribute in the attributes class' do
     attributes_class.attributes.each_pair do |attr, _|

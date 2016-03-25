@@ -1,5 +1,3 @@
-require 'api_cached_attributes/attribute_method_resolver'
-
 module ApiCachedAttributes
   # non-anonymous namespace for our generated methods. Mixed into the target
   # class so that introspection shows where the methods came from.
@@ -35,23 +33,27 @@ module ApiCachedAttributes
     # Sets a MethodResolver instance on the target_class as well. Logs warnings
     # if any methods on the target class are overwritten.
     #
-    # target_class - The class upon which the base_classes' attribute methods
-    #                should be set.
+    # target_class  - The class upon which the base_classes' attribute methods
+    #                 should be set.
+    # path_to_attrs - A string representing a line of ruby code that will be
+    #                 evaluated. This line is the relative path from a
+    #                 target_class instance to the object that holds the
+    #                 attributes and where the `get_attribute` is defined. If
+    #                 path_to_attrs is (default: self), that implies that this
+    #                 is defining methods on the Base class, because that object
+    #                 contains the `get_attribute` method.
     #
     # Returns the target_class
-    def attach_to(target_class)
-      method_resolver = AttributeMethodResolver.new(@base_class, @options)
-      overwrite_method_warnings(target_class)
-
-      target_class.instance_variable_set(method_resolver_var, method_resolver)
-      target_class.send(:include, make_attribute_methods_module)
+    def attach_to(target_class, path_to_attrs = 'self')
+      overwrite_method_warnings(target_class) unless path_to_attrs == 'self'
+      target_class.send(:include, make_attribute_methods_module(path_to_attrs))
     end
 
     private
 
     # Internal: Returns a module with the base_classes' attributes defined as
     # getter and setter methods.
-    def make_attribute_methods_module
+    def make_attribute_methods_module(path_to_attrs)
       attribute_methods_module = AttributeMethods.new
 
       @base_class.attributes.keys.each do |attributes_method|
@@ -59,8 +61,7 @@ module ApiCachedAttributes
         method_name = "#{@options[:prefix]}_#{method_name}" if @options[:prefix]
         attribute_methods_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
           def #{method_name}
-            self.class.instance_variable_get(:#{method_resolver_var})
-                      .get(:#{attributes_method}, self)
+            #{path_to_attrs}.get_attribute(:#{attributes_method})
           end
 
           def #{method_name}=(other)
@@ -69,12 +70,6 @@ module ApiCachedAttributes
         RUBY
       end
       attribute_methods_module
-    end
-
-    # Internal: The name of the variable on the target class which holds the
-    # instance of the ApiCachedAttributes::MethodResolver.
-    def method_resolver_var
-      "@#{@base_class.underscore}_resolver".to_sym
     end
 
     # Internal: Populate the attributes map. If no attributes_map arg is given,

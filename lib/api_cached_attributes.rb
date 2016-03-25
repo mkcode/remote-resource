@@ -18,13 +18,17 @@ module ApiCachedAttributes
   extend Configuration::LookupMethod
 
   autoload_under 'base' do
+    autoload :Attributes
     autoload :Dsl
     autoload :BaseClassMethods
+    autoload :Rescue
   end
 
+  autoload :AssociationBuilder
   autoload :AttributeMethodAttacher
-  autoload :AttributeMethodResolver
+  autoload :AttributeSpecification
   autoload :Base
   autoload :Bridge
   autoload :LogSubscriber
+  autoload :ScopeEvaluator
 end

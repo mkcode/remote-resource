@@ -5,17 +5,63 @@
 [![Test Coverage](https://codeclimate.com/github/mkcode/api_cached_attributes/badges/coverage.svg)](https://codeclimate.com/github/mkcode/api_cached_attributes/coverage)
 [![Inline docs](http://inch-ci.org/github/mkcode/api_cached_attributes.svg?branch=master)](http://inch-ci.org/github/mkcode/api_cached_attributes)
 
-Cache your API. Add resiliency and speed to the APIs your app relies on.
+Add resiliency, speed, and familiarity to the APIs your app relies on.
 Features:
 
  * A simple DSL for resource oriented APIs.
- * Create 'hybrid' (API and activerecord based) domain objects.
- * Major performance gains when API responses are served from (a redis) cache.
+ * Work with foreign APIs in the same way you work with ActiveRecord associations.
+ * Transparently caches API responses for major performance gains.
  * Don't fail when APIs your app relies on are momentarily down.
  * Respect your APIs Cache-Control header. Or don't. It's up to you.
  * Configurable logging and error reporting.
  * Trivial to add support for your new API client.
- * Multiple cache storage backends.
+
+## Getting started
+
+has_remote allows you to easily create ruby style domain objects (or models) that represents a foreign API. These `remote_resources` can be mixed in and associated with other ActiveRecord models in the same way you work with your other ActiveRecord models. Using this pattern and these conventions yields some major performance gains, through caching and fast and robust development through familiarity.
+
+A few steps to get started:
+
+Create a `remote_resource`, such as:
+
+> in `app/remote_resources/github_user.rb`
+
+```ruby
+class GithubUser < HasRemote::Resource
+  client { Octokit::Client.new }
+  resource { |client, scope| client.user(scope[:github_login]) }
+
+  attribute :id
+  attribute :avatar_url
+
+  ...
+end
+```
+
+Associate it with your ActiveRecord `User` model:
+
+> in `app/models/user.rb`
+
+```ruby
+class User < ActiveRecord::Base
+  has_remote :github_user, scope: :github_login
+
+  ...
+end
+```
+
+And you may now use it, just like your other models.
+
+```ruby
+user = User.find(1)
+
+user.github_user.login
+user.github_user.avatar_url
+```
+
+Behind the scene, `has_remote` issued a get request to the GitHub API and cached the response. Future github_user calls will be fast!
+
+A simple demonstration Rails application can be found here: TODO: update link.
 
 ## Installation
 
@@ -33,7 +79,6 @@ Or install it yourself as:
 
     $ gem install api_cached_attributes
 
-## Usage
 
 ### Setup
 
