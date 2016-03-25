@@ -15,7 +15,7 @@ module RemoteResource
     end
 
     initializer "#{ns}.add_to_eager_load_paths" do |app|
-      app.config.paths.add 'app/api_attributes', eager_load: true
+      app.config.paths.add 'app/remote_resources', eager_load: true
     end
   end
 end
