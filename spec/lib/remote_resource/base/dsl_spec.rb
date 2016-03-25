@@ -22,14 +22,28 @@ describe RemoteResource::Dsl do
     end
 
     it 'adds the supplied block to the @resources hash' do
-      subject.named_resource(:user, &:user)
+      subject.resource(:user, &:user)
       expect(subject.ivar_get(:@resources)[:user].call(mock_client))
         .to eq('client_user')
     end
 
     it 'raises an ArgumentError if no block is given' do
-      expect { subject.named_resource(:user) }
+      expect { subject.resource(:user) }
         .to raise_error(ArgumentError)
+    end
+
+    context 'when an argument is provided' do
+      it 'uses the argument as the resource key' do
+        subject.resource(:the_key, &:user)
+        expect(subject.ivar_get(:@resources).keys).to eq([:the_key])
+      end
+    end
+
+    context 'when no argument is provided' do
+      it 'uses :default as the resource key' do
+        subject.resource(&:user)
+        expect(subject.ivar_get(:@resources).keys).to eq([:default])
+      end
     end
   end
 
@@ -41,7 +55,7 @@ describe RemoteResource::Dsl do
     end
 
     it 'sets the supplied block to the @resources[:default]' do
-      subject.default_resource(&:user)
+      subject.resource(&:user)
       expect(subject.ivar_get(:@resources)[:default].call(mock_client))
         .to eq('default_user')
     end
