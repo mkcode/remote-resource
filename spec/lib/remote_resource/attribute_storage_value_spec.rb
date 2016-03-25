@@ -6,7 +6,7 @@ describe RemoteResource::AttributeStorageValue do
     foc = fake_octokit_client
     stub_base_class 'GithubUser' do
       client { |scope| foc }
-      default_resource(&:user)
+      resource(&:user)
       attribute :login
     end
   end

@@ -59,7 +59,7 @@ describe RemoteResource::AttributeSpecification do
   describe '#resource' do
     context 'when the attributes specified resource does not exist' do
       it 'raise an ArgumentError' do
-        attr_class.default_resource(&:user)
+        attr_class.resource(&:user)
         expect { alt_subject.resource }.to raise_error(ArgumentError)
       end
     end
@@ -71,7 +71,7 @@ describe RemoteResource::AttributeSpecification do
         fake_client = double()
         allow(fake_client).to receive(:user).and_return('mkcode')
         attr_class.client { |scope| fake_client }
-        attr_class.default_resource { |c, s| c.user + s[:access_token] }
+        attr_class.resource { |c, s| c.user + s[:access_token] }
         expect(subject.resource).to eq('mkcodeabc123')
       end
     end
