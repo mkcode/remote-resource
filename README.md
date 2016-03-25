@@ -1,9 +1,9 @@
-# ApiCachedAttributes
+# RemoteResource
 
-[![Build Status](https://travis-ci.org/mkcode/api_cached_attributes.svg?branch=master)](https://travis-ci.org/mkcode/api_cached_attributes)
-[![Code Climate](https://codeclimate.com/github/mkcode/api_cached_attributes/badges/gpa.svg)](https://codeclimate.com/github/mkcode/api_cached_attributes)
-[![Test Coverage](https://codeclimate.com/github/mkcode/api_cached_attributes/badges/coverage.svg)](https://codeclimate.com/github/mkcode/api_cached_attributes/coverage)
-[![Inline docs](http://inch-ci.org/github/mkcode/api_cached_attributes.svg?branch=master)](http://inch-ci.org/github/mkcode/api_cached_attributes)
+[![Build Status](https://travis-ci.org/mkcode/remote_resource.svg?branch=master)](https://travis-ci.org/mkcode/remote_resource)
+[![Code Climate](https://codeclimate.com/github/mkcode/remote_resource/badges/gpa.svg)](https://codeclimate.com/github/mkcode/remote_resource)
+[![Test Coverage](https://codeclimate.com/github/mkcode/remote_resource/badges/coverage.svg)](https://codeclimate.com/github/mkcode/remote_resource/coverage)
+[![Inline docs](http://inch-ci.org/github/mkcode/remote_resource.svg?branch=master)](http://inch-ci.org/github/mkcode/remote_resource)
 
 Add resiliency, speed, and familiarity to the APIs your app relies on.
 Features:
@@ -68,7 +68,7 @@ A simple demonstration Rails application can be found here: TODO: update link.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'api_cached_attributes'
+gem 'remote_resource'
 ```
 
 And then execute:
@@ -77,32 +77,32 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install api_cached_attributes
+    $ gem install remote_resource
 
 
 ### Setup
 
-In a initializer, like `config/initializers/api_cached_attributes.rb`, you may override the following options:
+In a initializer, like `config/initializers/remote_resource.rb`, you may override the following options:
 
 ```ruby
 # Setup global storages. For now there is only redis and memory. Default is one
 # Memory store.
 
-require 'api_cached_attributes/storage/redis'
-ApiCachedAttributes.storages = [
-  ApiCachedAttributes::Storage::Redis.new( Redis.new(url:nil) )
+require 'remote_resource/storage/redis'
+RemoteResource.storages = [
+  RemoteResource::Storage::Redis.new( Redis.new(url:nil) )
 ]
 
 # Setup a logger
 
-ApiCachedAttributes.logger = Logger.new(STDOUT)
+RemoteResource.logger = Logger.new(STDOUT)
 
 # Setup a lookup method. Only default for now, but the `cache_control` option
 # may be changed to true or false. True will always revalidate. False will never
 # revalidate. :cache_control respects the Cache-Control header.
 
-require 'api_cached_attributes/lookup/default'
-ApiCachedAttributes.lookup_method = ApiCachedAttributes::Lookup::Default.new(validate: true)
+require 'remote_resource/lookup/default'
+RemoteResource.lookup_method = RemoteResource::Lookup::Default.new(validate: true)
 ```
 
 ### Defining an API
@@ -114,7 +114,7 @@ Rails eager loaded paths.
 In `app/api_attributes/github_user_attributes`:
 
 ```ruby
-class GithubUserAttributes < ApiCachedAttributes::Base
+class GithubUserAttributes < RemoteResource::Base
   client { Octokit::Client.new }
 
   default_resource { |client, scope| client.user(scope[:github_login]) }
@@ -152,12 +152,12 @@ The are 3 parts that every API definition class needs.
 
 ### Updating & Custom methods
 
-ApiCachedAttributes allows you to call any method that your API client defines and compose new methods from those within the Base class definition. Expanding on the above example:
+RemoteResource allows you to call any method that your API client defines and compose new methods from those within the Base class definition. Expanding on the above example:
 
 In `app/api_attributes/github_user_attributes`:
 
 ```ruby
-class GithubUserAttributes < ApiCachedAttributes::Base
+class GithubUserAttributes < RemoteResource::Base
   client { Octokit::Client.new }
 
   default_resource { |client, scope| client.user(scope[:github_login]) }
@@ -172,7 +172,7 @@ class GithubUserAttributes < ApiCachedAttributes::Base
 end
 ```
 
-The above `markdown_summary` method references client, which is what is returned from the above client block. The following methods are available within a ApiCachedAttributes::Base class.
+The above `markdown_summary` method references client, which is what is returned from the above client block. The following methods are available within a RemoteResource::Base class.
 
  * __client__ - returns the evaluated client block.
 
@@ -210,13 +210,13 @@ In `app/models/github_user`:
 class GithubUser < ActiveRecord::Base
   validates :github_login, presence: true, uniqueness: true
 
-  api_cached_attributes :github_user, scope: :github_login,
+  remote_resource :github_user, scope: :github_login,
     attributes_map: { id: :github_id, updated_at: :github_updated_at,
                       created_at: :github_created_at }
 end
 ```
 
-We call __api_cached_attributes__ to include the previously defined attributes in the GithubUser model to create a hybrid domain object. This is partially backed by the database, and partially backed by the Github API.
+We call __remote_resource__ to include the previously defined attributes in the GithubUser model to create a hybrid domain object. This is partially backed by the database, and partially backed by the Github API.
 
 We __scope: github_login__ option, collects the value of github_login on this model and sends this into the GithubUserAttributes class to make a unique client and resource. It does not need to be persisted (saved) to work.
 
@@ -226,13 +226,13 @@ The __validates__ line is not needed, but helps. Trying to access the attributes
 
 ### Extending other domain object
 
-If you do not use ActiveRecord in your app, you may still use api_cached_attributes by simply extending the Bridge module. Ex:
+If you do not use ActiveRecord in your app, you may still use remote_resource by simply extending the Bridge module. Ex:
 
 ```ruby
 class MyPoroDomainObject
-  extend ApiCachedAttributes::Bridge # this includes the api_cached_attributes_method
+  extend RemoteResource::Bridge # this includes the remote_resource_method
 
-  api_cached_attributes :github_user
+  remote_resource :github_user
 end
 
 ```
@@ -241,12 +241,12 @@ end
 
 There are 4 ActiveSupport notifications that you may subscribe to, to do in depth profiling of this gem:
 
-  * find.api_cached_attributes
-  * storage_lookup.api_cached_attributes
-  * http_head.api_cached_attributes
-  * http_get.api_cached_attributes
+  * find.remote_resource
+  * storage_lookup.remote_resource
+  * http_head.remote_resource
+  * http_get.remote_resource
 
-ActiveSupport::Notifications.subscribe('http_get.api_cached_attributes') do |name, _start, _fin, _id, _payload|
+ActiveSupport::Notifications.subscribe('http_get.remote_resource') do |name, _start, _fin, _id, _payload|
   puts "HTTP_GET #{name}"
 end
 
@@ -258,7 +258,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/api_cached_attributes. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/remote_resource. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License

@@ -4,10 +4,10 @@ if ENV['COVERAGE']
   SimpleCov.start do
     add_filter '/spec/'
     add_group 'Core', [*Dir.glob('lib/*.rb'),
-                       *Dir.glob('lib/api_cached_attributes/*.rb'),
-                       'lib/api_cached_attributes/configuration']
-    add_group 'Storage', 'lib/api_cached_attributes/storage/*'
-    add_group 'Lookup', 'lib/api_cached_attributes/lookup/*'
+                       *Dir.glob('lib/remote_resource/*.rb'),
+                       'lib/remote_resource/configuration']
+    add_group 'Storage', 'lib/remote_resource/storage/*'
+    add_group 'Lookup', 'lib/remote_resource/lookup/*'
     if ENV['CI']
       formatter SimpleCov::Formatter::MultiFormatter.new [
         CodeClimate::TestReporter::Formatter,
@@ -23,8 +23,8 @@ if ENV['COVERAGE']
 end
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'api_cached_attributes'
-require 'api_cached_attributes/storage/redis'
+require 'remote_resource'
+require 'remote_resource/storage/redis'
 
 require 'pry'
 
