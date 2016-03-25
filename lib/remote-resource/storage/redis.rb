@@ -1,7 +1,7 @@
 require 'remote_resource/storage/serializers/marshal'
 require 'remote_resource/storage/storage_entry'
 
-module ApiCachedAttributes
+module RemoteResource
   module Storage
     class Redis
       def initialize(redis, serializer = nil)

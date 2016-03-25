@@ -1,4 +1,4 @@
-module ApiCachedAttributes
+module RemoteResource
   class ScopeEvaluator
     attr_reader :scope
 

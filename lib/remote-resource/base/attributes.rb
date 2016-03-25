@@ -1,7 +1,7 @@
-module ApiCachedAttributes
+module RemoteResource
   # Defines attribute related methods for Base class instances.
   module Attributes
-    include ApiCachedAttributes::Notifications
+    include RemoteResource::Notifications
 
     # Public: Creates and returns an array of cached attributes for the provided
     # base_instance. The base_instance is stored in each attribute and is used
@@ -26,7 +26,7 @@ module ApiCachedAttributes
     def get_attribute(name)
       attribute = find_attribute(name)
 
-      attr_lookup = ApiCachedAttributes.lookup_method
+      attr_lookup = RemoteResource.lookup_method
       lookup_name = attr_lookup.class.name
       instrument_attribute('find', attribute, lookup_method: lookup_name) do
         attr_lookup.find(attribute).value

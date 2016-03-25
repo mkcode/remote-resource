@@ -1,9 +1,9 @@
 require 'active_support/log_subscriber'
 
-module ApiCachedAttributes
+module RemoteResource
   class LogSubscriber < ActiveSupport::LogSubscriber
     def logger
-      ApiCachedAttributes.logger
+      RemoteResource.logger
     end
 
     def find(event)
@@ -36,4 +36,4 @@ module ApiCachedAttributes
   end
 end
 
-ApiCachedAttributes::LogSubscriber.attach_to :remote_resource
+RemoteResource::LogSubscriber.attach_to :remote_resource

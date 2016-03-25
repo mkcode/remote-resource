@@ -2,7 +2,7 @@ require 'active_support/core_ext/hash/reverse_merge'
 
 require 'remote_resource/attribute_storage_value'
 
-module ApiCachedAttributes
+module RemoteResource
   module Lookup
     # Default lookup class. Top most level class used for looking up attributes
     # across storages and remotely over http.

@@ -1,8 +1,8 @@
 require 'remote_resource/attribute_key'
 
-module ApiCachedAttributes
+module RemoteResource
   # A value object representing an attribute defined in
-  # ApiCachedAttributes::Base. An AttributeSpecification contains the
+  # RemoteResource::Base. An AttributeSpecification contains the
   # attributes' method name, its resource, and its API client that is used for
   # lookup. It also calculates its `key` which is used to lookup its value in
   # storage.

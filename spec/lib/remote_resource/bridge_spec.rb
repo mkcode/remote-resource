@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApiCachedAttributes::Bridge do
+describe RemoteResource::Bridge do
   before  { stub_base_class 'GithubUser' }
   subject { Class.new.tap { |o| o.extend(described_class) } }
 
@@ -15,14 +15,14 @@ describe ApiCachedAttributes::Bridge do
     context 'when the first argument is not an existing Resource descendant' do
       it 'raises a BaseClassNotFound error' do
         expect { subject.send(test_method, :does_not_exist) }
-          .to raise_error ApiCachedAttributes::BaseClassNotFound
+          .to raise_error RemoteResource::BaseClassNotFound
       end
     end
   end
 
   shared_examples 'an AssociationBuilder method' do |test_method|
     it 'creates and uses the AssociationBuilder' do
-      expect_any_instance_of(ApiCachedAttributes::AssociationBuilder)
+      expect_any_instance_of(RemoteResource::AssociationBuilder)
         .to receive(:associated_with).with(subject).and_call_original
       subject.send(test_method, :github_user)
     end
@@ -38,7 +38,7 @@ describe ApiCachedAttributes::Bridge do
     it_behaves_like 'an AssociationBuilder method', :has_remote
 
     it 'does not tell the AttributeMethodAttacher to define methods on self' do
-      expect_any_instance_of(ApiCachedAttributes::AttributeMethodAttacher)
+      expect_any_instance_of(RemoteResource::AttributeMethodAttacher)
         .to_not receive(:attach_to).with(subject)
       subject.has_remote(:github_user)
     end
@@ -49,7 +49,7 @@ describe ApiCachedAttributes::Bridge do
     it_behaves_like 'an AssociationBuilder method', :embed_remote
 
     it 'instructs the AttributeMethodAttacher to define methods on self' do
-      expect_any_instance_of(ApiCachedAttributes::AttributeMethodAttacher)
+      expect_any_instance_of(RemoteResource::AttributeMethodAttacher)
         .to receive(:attach_to).with(subject, 'github_user_attributes')
       subject.embed_remote(:github_user)
     end

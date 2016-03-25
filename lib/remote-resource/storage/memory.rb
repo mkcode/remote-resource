@@ -1,6 +1,6 @@
 require 'remote_resource/storage/storage_entry'
 
-module ApiCachedAttributes
+module RemoteResource
   module Storage
     class Memory
       attr_accessor :memory_value

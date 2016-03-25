@@ -1,4 +1,4 @@
-module ApiCachedAttributes
+module RemoteResource
   # non-anonymous namespace for our generated methods. Mixed into the target
   # class so that introspection shows where the methods came from.
   class AttributeMethods < Module; end
@@ -98,7 +98,7 @@ module ApiCachedAttributes
         if present_and_future_public_methods(target_class).include? method
           log_msg =  "#{@base_class.name} is overwriting the "
           log_msg += "#{method} method on #{target_class.name}"
-          ApiCachedAttributes.logger.warn log_msg
+          RemoteResource.logger.warn log_msg
         end
       end
     end

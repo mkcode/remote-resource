@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApiCachedAttributes::ScopeEvaluator do
+describe RemoteResource::ScopeEvaluator do
   describe '#initialize' do
     context 'without a scope argument' do
       it 'sets the scope to an empty hash' do

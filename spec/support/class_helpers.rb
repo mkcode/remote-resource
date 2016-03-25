@@ -6,6 +6,6 @@ module ClassHelpers
   def stub_base_class(name, &block)
     ActiveSupport::DescendantsTracker.clear
     class_name = name.end_with?('Attributes') ? name : name + 'Attributes'
-    stub_class(class_name, ApiCachedAttributes::Base, &block)
+    stub_class(class_name, RemoteResource::Base, &block)
   end
 end

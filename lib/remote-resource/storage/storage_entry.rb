@@ -2,7 +2,7 @@ require 'active_support/time'
 
 require 'remote_resource/storage/cache_control'
 
-module ApiCachedAttributes
+module RemoteResource
   # A storage entry closely resembles a network response. This seeks to
   # counteract the impedance mismatch because API responses are done on the
   # resource level and we want to query storages at the attribute level. Headers

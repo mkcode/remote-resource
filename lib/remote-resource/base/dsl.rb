@@ -1,4 +1,4 @@
-module ApiCachedAttributes
+module RemoteResource
   # Our humble DSL
   module Dsl
     attr_reader :client_proc, :resources

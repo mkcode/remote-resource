@@ -1,6 +1,6 @@
 require_relative '../serializer'
 
-module ApiCachedAttributes
+module RemoteResource
   module Storage
     module Serializers
       class MarshalSerializer < Serializer

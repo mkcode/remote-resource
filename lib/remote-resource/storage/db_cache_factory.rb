@@ -1,6 +1,6 @@
 require 'remote_resource/storage/db_cache'
 
-module ApiCachedAttributes
+module RemoteResource
   class UnsupportedDatabase < StandardError; end
 
   class DBCacheFactory

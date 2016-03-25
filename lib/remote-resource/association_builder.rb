@@ -1,4 +1,4 @@
-module ApiCachedAttributes
+module RemoteResource
   # The AssociationBuilder class is responsible for defining a method(s) on a
   # target object that refers to an associated Base class. The body of that
   # method instantiates an attributes class.
@@ -31,7 +31,7 @@ module ApiCachedAttributes
       scope = @options[:scope]
       target_class.module_eval <<-RUBY, __FILE__, __LINE__ + 1
         def #{method_name}
-          scope_evaluator = ApiCachedAttributes::ScopeEvaluator.new(#{scope})
+          scope_evaluator = RemoteResource::ScopeEvaluator.new(#{scope})
           evaluated_scope = scope_evaluator.evaluate_on(self)
           self.class.instance_variable_get(:#{remote_class_var(method_name)})
                     .new(evaluated_scope)

@@ -1,6 +1,6 @@
 require 'remote_resource/attribute_method_attacher'
 
-module ApiCachedAttributes
+module RemoteResource
   # Extending a class with the HasRemote::Bridge module will bring in
   # the has_remote and embed_remote method, and therefore all of the
   # functionality of the has_remote gem. In Rails, ActiveRecord is
@@ -121,7 +121,7 @@ module ApiCachedAttributes
     #
     # Returns an instance of AssociationBuilder.
     def has_remote(which_klass, options = {})
-      klass = ApiCachedAttributes::Base.find_descendant(which_klass)
+      klass = RemoteResource::Base.find_descendant(which_klass)
       fail BaseClassNotFound.new(which_klass) unless klass
 
       builder = AssociationBuilder.new(klass, options)

@@ -1,6 +1,6 @@
 require 'remote_resource/lookup/default'
 
-module ApiCachedAttributes
+module RemoteResource
   module Configuration
     # Our humble storage
     module LookupMethod

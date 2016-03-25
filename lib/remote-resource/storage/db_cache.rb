@@ -1,6 +1,6 @@
 require 'remote_resource/storage/serializers/marshal'
 
-module ApiCachedAttributes
+module RemoteResource
   class DBCache
     ADAPTERS = %i(active_record)
 

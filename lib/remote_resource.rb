@@ -10,7 +10,7 @@ require 'active_support/descendants_tracker'
 require 'active_support/dependencies/autoload'
 
 # doc
-module ApiCachedAttributes
+module RemoteResource
   extend ActiveSupport::Autoload
 
   extend Configuration::Logger

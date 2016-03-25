@@ -1,4 +1,4 @@
-module ApiCachedAttributes
+module RemoteResource
   # Methods that help with loading and naming the Base class.
   module BaseClassMethods
     def find_descendant(which_class)

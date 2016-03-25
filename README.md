@@ -1,4 +1,4 @@
-# ApiCachedAttributes
+# RemoteResource
 
 [![Build Status](https://travis-ci.org/mkcode/remote_resource.svg?branch=master)](https://travis-ci.org/mkcode/remote_resource)
 [![Code Climate](https://codeclimate.com/github/mkcode/remote_resource/badges/gpa.svg)](https://codeclimate.com/github/mkcode/remote_resource)
@@ -89,20 +89,20 @@ In a initializer, like `config/initializers/remote_resource.rb`, you may overrid
 # Memory store.
 
 require 'remote_resource/storage/redis'
-ApiCachedAttributes.storages = [
-  ApiCachedAttributes::Storage::Redis.new( Redis.new(url:nil) )
+RemoteResource.storages = [
+  RemoteResource::Storage::Redis.new( Redis.new(url:nil) )
 ]
 
 # Setup a logger
 
-ApiCachedAttributes.logger = Logger.new(STDOUT)
+RemoteResource.logger = Logger.new(STDOUT)
 
 # Setup a lookup method. Only default for now, but the `cache_control` option
 # may be changed to true or false. True will always revalidate. False will never
 # revalidate. :cache_control respects the Cache-Control header.
 
 require 'remote_resource/lookup/default'
-ApiCachedAttributes.lookup_method = ApiCachedAttributes::Lookup::Default.new(validate: true)
+RemoteResource.lookup_method = RemoteResource::Lookup::Default.new(validate: true)
 ```
 
 ### Defining an API
@@ -114,7 +114,7 @@ Rails eager loaded paths.
 In `app/api_attributes/github_user_attributes`:
 
 ```ruby
-class GithubUserAttributes < ApiCachedAttributes::Base
+class GithubUserAttributes < RemoteResource::Base
   client { Octokit::Client.new }
 
   default_resource { |client, scope| client.user(scope[:github_login]) }
@@ -152,12 +152,12 @@ The are 3 parts that every API definition class needs.
 
 ### Updating & Custom methods
 
-ApiCachedAttributes allows you to call any method that your API client defines and compose new methods from those within the Base class definition. Expanding on the above example:
+RemoteResource allows you to call any method that your API client defines and compose new methods from those within the Base class definition. Expanding on the above example:
 
 In `app/api_attributes/github_user_attributes`:
 
 ```ruby
-class GithubUserAttributes < ApiCachedAttributes::Base
+class GithubUserAttributes < RemoteResource::Base
   client { Octokit::Client.new }
 
   default_resource { |client, scope| client.user(scope[:github_login]) }
@@ -172,7 +172,7 @@ class GithubUserAttributes < ApiCachedAttributes::Base
 end
 ```
 
-The above `markdown_summary` method references client, which is what is returned from the above client block. The following methods are available within a ApiCachedAttributes::Base class.
+The above `markdown_summary` method references client, which is what is returned from the above client block. The following methods are available within a RemoteResource::Base class.
 
  * __client__ - returns the evaluated client block.
 
@@ -230,7 +230,7 @@ If you do not use ActiveRecord in your app, you may still use remote_resource by
 
 ```ruby
 class MyPoroDomainObject
-  extend ApiCachedAttributes::Bridge # this includes the remote_resource_method
+  extend RemoteResource::Bridge # this includes the remote_resource_method
 
   remote_resource :github_user
 end

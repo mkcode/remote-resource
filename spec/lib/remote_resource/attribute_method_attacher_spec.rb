@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApiCachedAttributes::AttributeMethodAttacher do
+describe RemoteResource::AttributeMethodAttacher do
   let(:attributes_class) do
     stub_base_class 'GithubUser' do
       attribute :login
@@ -17,14 +17,14 @@ describe ApiCachedAttributes::AttributeMethodAttacher do
 
       it 'includes the AttributeMethods on the supplied class' do
         expect(target_class.included_modules.map(&:class))
-          .to include ApiCachedAttributes::AttributeMethods
+          .to include RemoteResource::AttributeMethods
       end
     end
 
     context 'when overwriting a method on the target class' do
       context 'and the path_to_attrs is foreign (not self)' do
         it 'logs a warning message' do
-          expect(ApiCachedAttributes.logger).to receive(:warn)
+          expect(RemoteResource.logger).to receive(:warn)
           target_class = Class.new
           target_class.send(:define_method, :login, -> {})
           subject.attach_to(target_class, 'github_user')
@@ -33,7 +33,7 @@ describe ApiCachedAttributes::AttributeMethodAttacher do
 
       context 'and the path_to_attrs is self' do
         it 'does not log a warning message' do
-          expect(ApiCachedAttributes.logger).to_not receive(:warn)
+          expect(RemoteResource.logger).to_not receive(:warn)
           target_class = Class.new
           target_class.send(:define_method, :login, -> {})
           subject.attach_to(target_class, 'self')
@@ -44,7 +44,7 @@ describe ApiCachedAttributes::AttributeMethodAttacher do
     context 'when the prefix option distinguishes the methods' do
       it 'does not log a warning message' do
         subject.options.merge!({ prefix: 'prefixed' })
-        expect(ApiCachedAttributes.logger).to_not receive(:warn)
+        expect(RemoteResource.logger).to_not receive(:warn)
         target_class = Class.new
         target_class.send(:define_method, :login, -> {})
         subject.attach_to(target_class)
@@ -85,12 +85,12 @@ describe ApiCachedAttributes::AttributeMethodAttacher do
       getter_method = attributes_class.attributes.keys.first
       setter_method = (getter_method.to_s + '=').to_sym
       expect { target_class.new.send(setter_method, '') }
-        .to raise_error(ApiCachedAttributes::ApiReadOnlyMethod)
+        .to raise_error(RemoteResource::ApiReadOnlyMethod)
     end
   end
 end
 
-describe ApiCachedAttributes::AttributeMethods do
+describe RemoteResource::AttributeMethods do
   let(:attributes_class) do
     stub_base_class 'GithubUser' do
       attribute :login
@@ -98,7 +98,7 @@ describe ApiCachedAttributes::AttributeMethods do
     end
   end
   let(:attacher_class) do
-    ApiCachedAttributes::AttributeMethodAttacher.new(attributes_class)
+    RemoteResource::AttributeMethodAttacher.new(attributes_class)
   end
   subject { attacher_class.send(:make_attribute_methods_module, 'self') }
 

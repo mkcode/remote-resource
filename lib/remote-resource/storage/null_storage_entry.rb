@@ -2,7 +2,7 @@ require 'active_support/time'
 
 require 'remote_resource/storage/cache_control'
 
-module ApiCachedAttributes
+module RemoteResource
   # An unset storage entry
   class NullStorageEntry
     attr_reader :headers, :data

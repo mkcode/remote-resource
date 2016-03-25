@@ -1,7 +1,7 @@
 require 'active_support/concern'
 require 'active_support/rescuable'
 
-module ApiCachedAttributes
+module RemoteResource
   # Methods that help with loading and naming the Base class.
   module Rescue
     extend ActiveSupport::Concern

@@ -1,8 +1,8 @@
 require 'remote_resource/notifications'
 
-module ApiCachedAttributes
+module RemoteResource
   class AttributeHttpClient
-    include ApiCachedAttributes::Notifications
+    include RemoteResource::Notifications
 
     def initialize(attribute, client = nil)
       @attribute = attribute

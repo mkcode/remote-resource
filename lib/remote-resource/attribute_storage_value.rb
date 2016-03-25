@@ -5,9 +5,9 @@ require 'remote_resource/storage/storage_entry'
 require 'remote_resource/storage/null_storage_entry'
 require 'remote_resource/notifications'
 
-module ApiCachedAttributes
+module RemoteResource
   class AttributeStorageValue
-    include ApiCachedAttributes::Notifications
+    include RemoteResource::Notifications
 
     delegate :data?, :exists?, :expired?, :headers_for_validation,
              :validateable?, to: :storage_entry
@@ -22,7 +22,7 @@ module ApiCachedAttributes
     end
 
     def storages
-      ApiCachedAttributes.storages
+      RemoteResource.storages
     end
 
     def fetch

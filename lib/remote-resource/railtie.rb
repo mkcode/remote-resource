@@ -1,17 +1,17 @@
-module ApiCachedAttributes
+module RemoteResource
   class Railtie < Rails::Railtie
     ns = 'remote_resource'
 
     console do
-      ApiCachedAttributes.logger = Rails.logger
+      RemoteResource.logger = Rails.logger
     end
 
     initializer "#{ns}.logger", after: 'active_record.logger' do
-      ApiCachedAttributes.logger = Rails.logger
+      RemoteResource.logger = Rails.logger
     end
 
     initializer "#{ns}.extend_active_record", after: 'active_record.set_configs' do
-      ActiveRecord::Base.send(:extend, ApiCachedAttributes::Bridge)
+      ActiveRecord::Base.send(:extend, RemoteResource::Bridge)
     end
 
     initializer "#{ns}.add_to_eager_load_paths" do |app|

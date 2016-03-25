@@ -1,6 +1,6 @@
 require 'remote_resource/storage/memory'
 
-module ApiCachedAttributes
+module RemoteResource
   module Configuration
     # Our humble storage
     module Storage
@@ -17,7 +17,7 @@ module ApiCachedAttributes
       end
 
       def default_storages
-        [ApiCachedAttributes::Storage::Memory.new]
+        [RemoteResource::Storage::Memory.new]
       end
     end
   end

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe ApiCachedAttributes::Dsl do
+describe RemoteResource::Dsl do
   subject do
-    Class.new(ApiCachedAttributes::Base).tap do |base_class|
+    Class.new(RemoteResource::Base).tap do |base_class|
       base_class.send(:include, ObjectIntrospectionHelpers)
     end
   end

@@ -1,15 +1,15 @@
 require 'active_support/descendants_tracker'
 
-module ApiCachedAttributes
+module RemoteResource
   # the base class for defining an api.
   class Base
     extend ActiveSupport::DescendantsTracker
 
-    extend ApiCachedAttributes::BaseClassMethods
-    extend ApiCachedAttributes::Dsl
+    extend RemoteResource::BaseClassMethods
+    extend RemoteResource::Dsl
 
-    include ApiCachedAttributes::Attributes
-    include ApiCachedAttributes::Rescue
+    include RemoteResource::Attributes
+    include RemoteResource::Rescue
 
     attr_reader :scope
 

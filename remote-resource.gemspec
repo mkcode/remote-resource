@@ -5,7 +5,7 @@ require 'remote_resource/version'
 
 Gem::Specification.new do |spec|
   spec.name        = 'remote-resource'
-  spec.version     = ApiCachedAttributes::VERSION
+  spec.version     = RemoteResource::VERSION
   spec.authors     = ['Chris Ewald']
   spec.email       = ['chrisewald@gmail.com']
 

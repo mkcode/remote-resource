@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApiCachedAttributes::AttributeSpecification do
+describe RemoteResource::AttributeSpecification do
   let(:attr_class) do
     stub_base_class "GithubUser" do
       attribute :login
@@ -79,7 +79,7 @@ describe ApiCachedAttributes::AttributeSpecification do
 
   describe '#key' do
     it 'returns an instance of AttributeKey' do
-      expect(subject.key).to be_an(ApiCachedAttributes::AttributeKey)
+      expect(subject.key).to be_an(RemoteResource::AttributeKey)
     end
 
     it 'the returned key has the correct parameters set on it' do

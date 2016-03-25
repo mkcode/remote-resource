@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'remote_resource/storage/memory'
 
-describe ApiCachedAttributes::AttributeStorageValue do
+describe RemoteResource::AttributeStorageValue do
   let(:attrs_class) do
     foc = fake_octokit_client
     stub_base_class 'GithubUser' do
@@ -11,23 +11,23 @@ describe ApiCachedAttributes::AttributeStorageValue do
     end
   end
   let(:attribute) do
-    ApiCachedAttributes::AttributeSpecification.new(:login, attrs_class.new)
+    RemoteResource::AttributeSpecification.new(:login, attrs_class.new)
   end
   before do
-    ApiCachedAttributes.storages = [ApiCachedAttributes::Storage::Memory.new]
+    RemoteResource.storages = [RemoteResource::Storage::Memory.new]
   end
   subject { described_class.new(attribute) }
 
   describe '#value' do
     it 'returns the value' do
-      subject.write ApiCachedAttributes::StorageEntry.new({}, {login: 'mkcode'})
+      subject.write RemoteResource::StorageEntry.new({}, {login: 'mkcode'})
       expect(subject.value).to eq('mkcode')
     end
   end
 
   describe '#storages' do
     it 'returns the storages set on the main class' do
-      ApiCachedAttributes.storages = ['test_storage']
+      RemoteResource.storages = ['test_storage']
       expect(subject.storages).to eq(['test_storage'])
     end
   end
@@ -36,15 +36,15 @@ describe ApiCachedAttributes::AttributeStorageValue do
     context 'when the attribute value does not exist in any storages' do
       it 'returns a NullStorageEntry' do
         expect(subject.storage_entry)
-          .to be_a ApiCachedAttributes::NullStorageEntry
+          .to be_a RemoteResource::NullStorageEntry
       end
     end
 
     context 'when the attribute value does exist in a storage' do
-      before { subject.write(ApiCachedAttributes::StorageEntry.new({}, 'hi')) }
+      before { subject.write(RemoteResource::StorageEntry.new({}, 'hi')) }
 
       it 'returns a populated storage_entry' do
-        expect(subject.storage_entry).to be_a ApiCachedAttributes::StorageEntry
+        expect(subject.storage_entry).to be_a RemoteResource::StorageEntry
       end
     end
   end
@@ -62,7 +62,7 @@ describe ApiCachedAttributes::AttributeStorageValue do
 
   describe '#fetch' do
     it 'calls get on the AttributeHttpClient with no headers' do
-      expect_any_instance_of(ApiCachedAttributes::AttributeHttpClient)
+      expect_any_instance_of(RemoteResource::AttributeHttpClient)
         .to receive(:get)
         .with(no_args)
         .and_return(fake_get_response)
@@ -77,7 +77,7 @@ describe ApiCachedAttributes::AttributeStorageValue do
 
   describe '#validate' do
     it 'calls get on the AttributeHttpClient with headers for validation' do
-      expect_any_instance_of(ApiCachedAttributes::AttributeHttpClient)
+      expect_any_instance_of(RemoteResource::AttributeHttpClient)
         .to receive(:get)
         .with(subject.headers_for_validation)
         .and_return(fake_get_response)
@@ -90,14 +90,14 @@ describe ApiCachedAttributes::AttributeStorageValue do
     end
 
     it 'returns true for a 304 Not Modified response' do
-      expect_any_instance_of(ApiCachedAttributes::AttributeHttpClient)
+      expect_any_instance_of(RemoteResource::AttributeHttpClient)
         .to receive(:get)
         .and_return(fake_not_modified_response)
       expect(subject.validate).to eq(true)
     end
 
     it 'returns false for a non 304 Not Modified response' do
-      expect_any_instance_of(ApiCachedAttributes::AttributeHttpClient)
+      expect_any_instance_of(RemoteResource::AttributeHttpClient)
         .to receive(:get)
         .and_return(fake_get_response)
       expect(subject.validate).to eq(false)
@@ -106,21 +106,21 @@ describe ApiCachedAttributes::AttributeStorageValue do
 
   describe '#write' do
     it 'calls write_key on every configured storage' do
-      ApiCachedAttributes.storages = [
-        ApiCachedAttributes::Storage::Memory.new,
-        ApiCachedAttributes::Storage::Memory.new
+      RemoteResource.storages = [
+        RemoteResource::Storage::Memory.new,
+        RemoteResource::Storage::Memory.new
       ]
-      ApiCachedAttributes.storages.each do |storage|
+      RemoteResource.storages.each do |storage|
         expect(storage)
           .to receive(:write_key)
           .with(attribute.key.for_storage, any_args)
       end
-      subject.write(ApiCachedAttributes::NullStorageEntry.new)
+      subject.write(RemoteResource::NullStorageEntry.new)
     end
 
     it 'reloads the storage_entry' do
       original_storage_entry = subject.storage_entry
-      new_storage = ApiCachedAttributes::StorageEntry.new({}, {login: 'mkcode'})
+      new_storage = RemoteResource::StorageEntry.new({}, {login: 'mkcode'})
       expect(subject.storage_entry).to eq(original_storage_entry)
       subject.write(new_storage)
       expect(subject.storage_entry).to_not eq(original_storage_entry)

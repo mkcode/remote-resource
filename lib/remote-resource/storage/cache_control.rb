@@ -1,4 +1,4 @@
-module ApiCachedAttributes
+module RemoteResource
   # A class to represent the 'Cache-Control' header options.
   # > This implementation is based on 'rack-cache' internals by Ryan Tomayko.
   # It breaks the several directives into keys/values and stores them into

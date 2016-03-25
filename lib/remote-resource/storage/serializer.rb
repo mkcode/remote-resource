@@ -1,4 +1,4 @@
-module ApiCachedAttributes
+module RemoteResource
   module Storage
     class UnImplemntedError < StandardError; end
 

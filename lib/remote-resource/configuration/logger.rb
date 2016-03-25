@@ -1,6 +1,6 @@
 require 'logger'
 
-module ApiCachedAttributes
+module RemoteResource
   module Configuration
     # Our humble logger
     module Logger

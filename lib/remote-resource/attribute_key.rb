@@ -1,4 +1,4 @@
-module ApiCachedAttributes
+module RemoteResource
   class AttributeKey
     attr_reader :prefix, :named_resource, :method
 

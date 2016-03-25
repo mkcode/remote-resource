@@ -3,7 +3,7 @@ ignore %r{.*/flycheck_.*}
 
 rspec_options = {
   cmd: 'bundle exec rspec',
-  title: 'ApiCachedAttributes Rspec',
+  title: 'RemoteResource Rspec',
   run_all: {
     cmd: 'COVERAGE=true bundle exec rspec -f progress',
     message: 'To view coverage: open coverage/index.html'
