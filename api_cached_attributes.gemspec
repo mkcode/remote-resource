@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'api_cached_attributes/version'
 
 Gem::Specification.new do |spec|
-  spec.name        = 'api_cached_attributes'
+  spec.name        = 'remote-resource'
   spec.version     = ApiCachedAttributes::VERSION
   spec.authors     = ['Chris Ewald']
   spec.email       = ['chrisewald@gmail.com']
 
-  spec.summary     = 'Add resiliency and speed to the APIs your app relies on.'
+  spec.summary     = 'Define and associate remote resources with speed and resiliency.'
   spec.description = 'See readme'
-  spec.homepage    = "https://github.com/mkcode/api_cached_attribute"
+  spec.homepage    = "https://github.com/mkcode/remote-resource"
   spec.license     = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
