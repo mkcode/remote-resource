@@ -1,6 +1,6 @@
 require 'active_support/time'
 
-require 'api_cached_attributes/storage/cache_control'
+require 'remote_resource/storage/cache_control'
 
 module ApiCachedAttributes
   # A storage entry closely resembles a network response. This seeks to

@@ -1,6 +1,6 @@
 module ApiCachedAttributes
   class Railtie < Rails::Railtie
-    ns = 'api_cached_attributes'
+    ns = 'remote_resource'
 
     console do
       ApiCachedAttributes.logger = Rails.logger

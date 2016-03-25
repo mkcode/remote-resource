@@ -1,4 +1,4 @@
-require 'api_cached_attributes/storage/memory'
+require 'remote_resource/storage/memory'
 
 module ApiCachedAttributes
   module Configuration

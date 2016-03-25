@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'api_cached_attributes/storage/memory'
+require 'remote_resource/storage/memory'
 
 describe ApiCachedAttributes::AttributeStorageValue do
   let(:attrs_class) do

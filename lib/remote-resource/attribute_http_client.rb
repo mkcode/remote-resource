@@ -1,4 +1,4 @@
-require 'api_cached_attributes/notifications'
+require 'remote_resource/notifications'
 
 module ApiCachedAttributes
   class AttributeHttpClient

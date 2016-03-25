@@ -39,7 +39,7 @@ describe ApiCachedAttributes::Attributes do
     it 'instruments find' do
       expect(ActiveSupport::Notifications)
         .to receive(:instrument)
-        .with('find.api_cached_attributes', any_args)
+        .with('find.remote_resource', any_args)
       subject.get_attribute(:login)
     end
   end

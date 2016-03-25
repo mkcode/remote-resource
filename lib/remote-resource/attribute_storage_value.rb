@@ -1,9 +1,9 @@
 require 'active_support/core_ext/module/delegation'
 
-require 'api_cached_attributes/attribute_http_client'
-require 'api_cached_attributes/storage/storage_entry'
-require 'api_cached_attributes/storage/null_storage_entry'
-require 'api_cached_attributes/notifications'
+require 'remote_resource/attribute_http_client'
+require 'remote_resource/storage/storage_entry'
+require 'remote_resource/storage/null_storage_entry'
+require 'remote_resource/notifications'
 
 module ApiCachedAttributes
   class AttributeStorageValue

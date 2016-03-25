@@ -36,4 +36,4 @@ module ApiCachedAttributes
   end
 end
 
-ApiCachedAttributes::LogSubscriber.attach_to :api_cached_attributes
+ApiCachedAttributes::LogSubscriber.attach_to :remote_resource

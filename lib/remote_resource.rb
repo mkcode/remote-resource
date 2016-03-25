@@ -1,9 +1,9 @@
-require 'api_cached_attributes/errors'
-require 'api_cached_attributes/configuration/logger'
-require 'api_cached_attributes/configuration/lookup_method'
-require 'api_cached_attributes/configuration/storage'
-require 'api_cached_attributes/version'
-require 'api_cached_attributes/railtie' if defined?(::Rails)
+require 'remote_resource/errors'
+require 'remote_resource/configuration/logger'
+require 'remote_resource/configuration/lookup_method'
+require 'remote_resource/configuration/storage'
+require 'remote_resource/version'
+require 'remote_resource/railtie' if defined?(::Rails)
 
 require 'active_support/core_ext/string'
 require 'active_support/descendants_tracker'

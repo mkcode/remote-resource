@@ -1,4 +1,4 @@
-require 'api_cached_attributes/storage/storage_entry'
+require 'remote_resource/storage/storage_entry'
 
 module ApiCachedAttributes
   module Storage

@@ -1,4 +1,4 @@
-require 'api_cached_attributes/attribute_method_attacher'
+require 'remote_resource/attribute_method_attacher'
 
 module ApiCachedAttributes
   # Extending a class with the HasRemote::Bridge module will bring in

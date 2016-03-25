@@ -1,4 +1,4 @@
-require 'api_cached_attributes/lookup/default'
+require 'remote_resource/lookup/default'
 
 module ApiCachedAttributes
   module Configuration

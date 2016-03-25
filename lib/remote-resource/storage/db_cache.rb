@@ -1,4 +1,4 @@
-require 'api_cached_attributes/storage/serializers/marshal'
+require 'remote_resource/storage/serializers/marshal'
 
 module ApiCachedAttributes
   class DBCache
