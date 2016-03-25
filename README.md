@@ -1,6 +1,6 @@
 # RemoteResource
 
-[![Build Status](https://travis-ci.org/mkcode/remote_resource.svg?branch=master)](https://travis-ci.org/mkcode/remote_resource)
+[![Build Status](https://travis-ci.org/mkcode/remote-resource.svg?branch=master)](https://travis-ci.org/mkcode/remote-resource)
 [![Code Climate](https://codeclimate.com/github/mkcode/remote_resource/badges/gpa.svg)](https://codeclimate.com/github/mkcode/remote_resource)
 [![Test Coverage](https://codeclimate.com/github/mkcode/remote_resource/badges/coverage.svg)](https://codeclimate.com/github/mkcode/remote_resource/coverage)
 [![Inline docs](http://inch-ci.org/github/mkcode/remote_resource.svg?branch=master)](http://inch-ci.org/github/mkcode/remote_resource)
