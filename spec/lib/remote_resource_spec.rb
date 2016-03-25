@@ -27,11 +27,6 @@ describe RemoteResource::Base do
       expect(descendant.superclass).to eq(RemoteResource::Base)
     end
 
-    it 'matches descendants on its full name' do
-      desc = RemoteResource::Base.find_descendant(:github_user_attributes)
-      expect(desc.superclass).to eq(RemoteResource::Base)
-    end
-
     it 'returns nil if the provided class does not exist' do
       descendant = RemoteResource::Base.find_descendant(:not_a_github_user)
       expect(descendant).to be_nil
@@ -39,23 +34,17 @@ describe RemoteResource::Base do
   end
 
   context 'class name convenience methods' do
-    subject { stub_base_class 'GithubUserAttributes' }
+    subject { stub_base_class 'GithubUser' }
 
     describe '.underscore' do
       it 'returns the underscored name of the class' do
-        expect(subject.underscore).to eq('github_user_attributes')
+        expect(subject.underscore).to eq('github_user')
       end
     end
 
-    describe '.short_name' do
-      it 'returns the short name of the class' do
-        expect(subject.short_name).to eq('GithubUser')
-      end
-    end
-
-    describe '.short_sym' do
-      it 'returns the short symbol name of the class' do
-        expect(subject.short_sym).to eq(:github_user)
+    describe '.symbol_name' do
+      it 'returns the symbol name of the class' do
+        expect(subject.symbol_name).to eq(:github_user)
       end
     end
   end

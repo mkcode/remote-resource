@@ -26,7 +26,7 @@ module RemoteResource
       {
         name: @name,
         resource: resource_name,
-        base_class: @base_class.class.short_sym,
+        base_class: @base_class.class.symbol_name,
         location: location
       }
     end
