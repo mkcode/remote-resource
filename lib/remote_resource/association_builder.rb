@@ -29,6 +29,7 @@ module RemoteResource
 
     def define_association_method(method_name, target_class)
       scope = @options[:scope]
+      scope = ":#{@options[:scope]}" if @options[:scope].is_a?(Symbol)
       target_class.module_eval <<-RUBY, __FILE__, __LINE__ + 1
         def #{method_name}
           scope_evaluator = RemoteResource::ScopeEvaluator.new(#{scope})
