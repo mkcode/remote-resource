@@ -5,33 +5,35 @@
 [![Test Coverage](https://codeclimate.com/github/mkcode/remote-resource/badges/coverage.svg)](https://codeclimate.com/github/mkcode/remote-resource/coverage)
 [![Inline docs](http://inch-ci.org/github/mkcode/remote_resource.svg?branch=master)](http://inch-ci.org/github/mkcode/remote_resource)
 
-Add resiliency, speed, and familiarity to the APIs your app relies on. Features:
+__RemoteResource__ allows you to easily create `ActiveRecord` style domain
+objects that represent a foreign API. These `remote resources` can be mixed into
+or associated with other ActiveRecord models in the same way you work with all
+your other models. Using these conventions yields some major performance gains
+through caching and fast and simple development through familiarity.
 
- * A simple DSL for resource oriented APIs.
- * Work with foreign APIs in the same way you work with ActiveRecord
-   associations.
- * Transparently caches API responses for major performance gains.
- * Don't fail when APIs your app relies on are momentarily down.
- * Respect your APIs Cache-Control header. Or don't. It's up to you.
- * Configurable logging and error reporting.
- * Trivial to add support for your new API client.
+## Why RemoteResource
+
+ * Familiar - The DSL used to wrap foreign APIs is simple and intuitive. Using
+   the remote resource will be familiar to anyone who has worked with
+   ActiveRecord models.
+
+ * Reusable - Write your API interface once. Associate it with an ActiveRecord
+   object, embed it into a value object, or instantiate it for use in a service.
+
+ * Performant - API responses are transparently cached. Subsequent calls move at
+   the speed of redis. Etag based cache expiring, which you may override. Makes
+   detailed list pages possible.
+
+ * Resiliant - Easy to configure error handling, just like ActionContoller. Use
+   cached values to rescue momentary network failures.
 
 ## Getting started
-
-__RemoteResource__ allows you to easily create `ActiveRecord` style domain
-objects (or models) that represent a foreign API. These `remote_resources` can
-be mixed in and associated with other ActiveRecord models in the same way you
-work with all your other models. Using this pattern and these conventions yields
-some major performance gains through caching and fast and simple development
-through familiarity.
-
-A few steps to get started:
 
 Create a `remote_resource`, such as:
 
 ```ruby
-# in `app/remote_resources/github_user.rb`
-class GithubUser < HasRemote::Resource
+# in app/remote_resources/github_user.rb
+class GithubUser < RemoteResource::Base
   client { Octokit::Client.new }
   resource { |client, scope| client.user(scope[:github_login]) }
 
@@ -45,7 +47,7 @@ end
 Associate it with your ActiveRecord `User` model:
 
 ```ruby
-# in `app/models/user.rb`
+# in app/models/user.rb
 class User < ActiveRecord::Base
   has_remote :github_user, scope: :github_login
 
@@ -59,7 +61,7 @@ local models.
 ```ruby
 user = User.find(1)
 
-user.github_user.login
+user.github_user.id
 user.github_user.avatar_url
 ```
 
@@ -81,7 +83,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install remote_resource
+    $ gem install remote-resource
 
 ## Defining an RemoteResource
 
@@ -103,9 +105,11 @@ class GithubUserAttributes < RemoteResource::Base
 end
 ```
 
-The are 4 class methods that are available to help define an (API) remote resource. They are:
+The are 4 class methods that are available to help define an (API) remote
+resource. They are:
 
- * __client__: You return an instance of the web client that the API uses in a block. That block yields the scope. (More on scope later.)
+ * __client__: You return an instance of the web client that the API uses in a
+   block. That block yields the scope. (More on scope later.)
 
  * __resource__: Supply a block to the resource method that returns a a remote
    resource. For example, the 'show user' response (GET /user/:github_login)
@@ -117,10 +121,10 @@ The are 4 class methods that are available to help define an (API) remote resour
    This will be mapped to a method later. Optionally takes a second symbol
    argument referring to a non-default resource (with an argument).
 
- * __rescue_from__: Works in the same way that ActionContoller's rescue_from
+ * __rescue_from__: Works in the same way that ActionController's rescue_from
    works. It takes one or many Error class(es), and either a block of a `:with`
-   option that refers to an instance method on this class. The block and
-   instance method both receive the error and an additional context argument.
+   option that refers to an instance method on this class. The block or instance
+   method receive the error and an additional context hash as arguments.
 
 Remote resource allows you to define any instance method you like on it, which
 may be used by being instantiated itself or from an associated model.
@@ -200,7 +204,7 @@ github_user.markdown_summary
 #=> "<h1>A big hello to Chris Ewald!!!</h1>"
 ```
 
-We also may call any of our defined attributes. Ex:
+We also may call any of our defined attributes.
 
 ```ruby
 github_user.name
@@ -238,19 +242,20 @@ Two methods are available for your model classes. `has_remote` and
 `embeds_remote`. They take all the same options and do mostly the same thing;
 create a method on the calling object, which returns that records associated
 RemoteResource instance. `embeds_remote` will go one step further and define all
-of the attribute getter methods on the model class as well. This can be used to
-create 'flat' domain objects which are backed by values from a remote API. This
-is largely related to Inhertance vs Composition programming theory which you are
-welcome to look up on your own time. RemoteResource supports both styles; 'Is'
-through `embeds_remote` and 'has' through `has_remote`. If unsure, you should
-prefer to use `has_remote` over `embeds_remote` to create a clear distinction
-between your local and remote domain.
+of the attribute getter methods on the calling class as well. This can be used
+to create flat domain objects, or possibly value_objects, which are backed by
+values from a remote API. This is largely related to Inhertance vs Composition
+in programming theory which you are welcome to look up on your own time.
+RemoteResource supports both styles; 'Is' through `embeds_remote` and 'has'
+through `has_remote`. If unsure, it is best to prefer composition and use
+`has_remote` over `embeds_remote` to create a clear distinction between your
+local and remote domain.
 
 ## Extending other domain objects
 
-If you do not use ActiveRecord in your app, you may still use remote_resource by
-simply extending the Bridge module onto what class you use as your domain. The
-`has_remote` and `embed_remote` methods will then be available. For example:
+If you do not use ActiveRecord in your app, you may still use remote-resource by
+simply extending the Bridge module onto whatever class you use. The `has_remote`
+and `embed_remote` methods will then be available. For example:
 
 ```ruby
 class MyPoro
@@ -261,22 +266,23 @@ end
 
 ## Configuration
 
-In a initializer, like `config/initializers/remote_resource.rb`, you may override the following options:
+In a initializer, like `config/initializers/remote_resource.rb`, you may
+override the following options:
 
 ```ruby
-# Setup global storages. For now there is only redis and memory. Default is one
-# Memory store.
+# Setup global storages. For now there are Redis and Memory stores available.
+# Default is Memory store.
 
 require 'remote_resource/storage/redis'
 RemoteResource.storages = [
   RemoteResource::Storage::Redis.new( Redis.new(url:nil) )
 ]
 
-# Setup a logger
+# Specify the logger RemoteResource should use:
 
 RemoteResource.logger = Logger.new(STDOUT)
 
-# Setup a lookup method. Only default for now, but the `cache_control` option
+# Setup a lookup method. Only default for now, but the `validate` option
 # may be changed to true or false. True will always revalidate. False will never
 # revalidate. :cache_control respects the Cache-Control header.
 
@@ -286,29 +292,39 @@ RemoteResource.lookup_method = RemoteResource::Lookup::Default.new(validate: tru
 
 ## Notifications
 
-There are 4 ActiveSupport notifications that you may subscribe to, to do in depth profiling of this gem:
+There are 3 ActiveSupport notifications that you may subscribe to, to do in
+depth profiling of this gem:
 
   * find.remote_resource
   * storage_lookup.remote_resource
-  * http_head.remote_resource
   * http_get.remote_resource
 
+```ruby
 ActiveSupport::Notifications.subscribe('http_get.remote_resource') do |name, _start, _fin, _id, _payload|
   puts "HTTP_GET #{name}"
 end
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run
+`rake spec` to run the tests. You can also run `bin/console` for an interactive
+prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To
+release a new version, update the version number in `version.rb`, and then run
+`bundle exec rake release`, which will create a git tag for the version, push
+git commits and tags, and push the `.gem` file to
+[rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/remote_resource. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/[USERNAME]/remote_resource. This project is intended to be a
+safe, welcoming space for collaboration, and contributors are expected to adhere
+to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
+The gem is available as open source under the terms of the
+[MIT License](http://opensource.org/licenses/MIT).
