@@ -92,7 +92,7 @@ This folder is automatically added to your Rails eager loaded paths.
 
 ```ruby
 # In `app/remote_resources/github_user.rb
-class GithubUserAttributes < RemoteResource::Base
+class GithubUser < RemoteResource::Base
   client { Octokit::Client.new }
 
   resource { |client, scope| client.user(scope[:github_login]) }
@@ -148,7 +148,7 @@ The following instance methods are available within a RemoteResource::Base class
 
 ```ruby
 # In `app/remote_resources/github_user.rb
-class GithubUserAttributes < RemoteResource::Base
+class GithubUser < RemoteResource::Base
   client { Octokit::Client.new }
   resource { |client, scope| client.user(scope[:github_login]) }
   attribute :name
