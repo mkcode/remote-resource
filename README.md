@@ -3,7 +3,6 @@
 [![Build Status](https://travis-ci.org/mkcode/remote-resource.svg?branch=master)](https://travis-ci.org/mkcode/remote-resource)
 [![Code Climate](https://codeclimate.com/github/mkcode/remote-resource/badges/gpa.svg)](https://codeclimate.com/github/mkcode/remote-resource)
 [![Test Coverage](https://codeclimate.com/github/mkcode/remote-resource/badges/coverage.svg)](https://codeclimate.com/github/mkcode/remote-resource/coverage)
-[![Inline docs](http://inch-ci.org/github/mkcode/remote_resource.svg?branch=master)](http://inch-ci.org/github/mkcode/remote_resource)
 
 __RemoteResource__ allows you to easily create `ActiveRecord` style domain
 objects that represent a foreign API. These `remote resources` can be mixed into
