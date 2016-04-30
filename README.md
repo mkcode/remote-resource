@@ -273,9 +273,14 @@ override the following options:
 # Setup global storages. For now there are Redis and Memory stores available.
 # Default is Memory store.
 
-require 'remote_resource/storage/redis'
+# Storage::Redis takes an instance of redis client and the following options:
+#
+#   expires_in - Time in seconds for to keys ttl. (Default is 1 day)
+#   serializer - Instance of the serializer to load and dump the response.
+#                (Default is MarshalSerializer.new)
+#
 RemoteResource.storages = [
-  RemoteResource::Storage::Redis.new( Redis.new(url:nil) )
+  RemoteResource::Storage::Redis.new(Redis.new(url:nil), expires_in: 7.days)
 ]
 
 # Specify the logger RemoteResource should use:
@@ -286,7 +291,6 @@ RemoteResource.logger = Logger.new(STDOUT)
 # may be changed to true or false. True will always revalidate. False will never
 # revalidate. :cache_control respects the Cache-Control header.
 
-require 'remote_resource/lookup/default'
 RemoteResource.lookup_method = RemoteResource::Lookup::Default.new(validate: true)
 ```
 
