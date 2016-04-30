@@ -1,6 +1,6 @@
 require 'active_support/core_ext/hash/reverse_merge'
 
-require 'remote_resource/storage/serializers/marshal'
+require 'remote_resource/storage/serializers/marshal_serializer'
 require 'remote_resource/storage/storage_entry'
 
 module RemoteResource

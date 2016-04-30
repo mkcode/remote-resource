@@ -31,4 +31,30 @@ module RemoteResource
   autoload :Bridge
   autoload :LogSubscriber
   autoload :ScopeEvaluator
+
+  module Lookup
+    extend ActiveSupport::Autoload
+
+    autoload :Default
+  end
+
+  autoload_under 'storage' do
+    autoload :CacheControl
+    autoload :NullStorageEntry
+    autoload :StorageEntry
+  end
+
+  module Storage
+    extend ActiveSupport::Autoload
+
+    autoload :Memory
+    autoload :Redis
+    autoload :Serializer
+
+    module Serializers
+      extend ActiveSupport::Autoload
+
+      autoload :MarshalSerializer
+    end
+  end
 end
