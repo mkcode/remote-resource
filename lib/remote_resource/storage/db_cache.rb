@@ -1,4 +1,4 @@
-require 'remote_resource/storage/serializers/marshal'
+require 'remote_resource/storage/serializers/marshal_serializer'
 
 module RemoteResource
   class DBCache
