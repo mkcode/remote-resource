@@ -1,4 +1,4 @@
-require_relative '../serializer'
+require 'remote_resource/storage/serializer'
 
 module RemoteResource
   module Storage
