@@ -16,7 +16,7 @@ module RemoteResource
     def initialize(**args)
       @scope = args
       create_attributes(self)
-      AttributeMethodAttacher.new(self.class).attach_to(self.class)
+      AttributeMethodAttacher.new(self.class).attach_to(self.singleton_class)
     end
 
     def client
