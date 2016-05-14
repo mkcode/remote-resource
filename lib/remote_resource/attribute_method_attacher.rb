@@ -54,21 +54,24 @@ module RemoteResource
     # Internal: Returns a module with the base_classes' attributes defined as
     # getter and setter methods.
     def make_attribute_methods_module(path_to_attrs)
-      attribute_methods_module = AttributeMethods.new
+      attribute_methods_module = AttributeMethods.new { extend Mutex_m }
 
-      @base_class.attributes.keys.each do |attributes_method|
-        method_name = @options[:attributes_map][attributes_method]
-        method_name = "#{@options[:prefix]}_#{method_name}" if @options[:prefix]
-        attribute_methods_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
-          def #{method_name}
-            #{path_to_attrs}.get_attribute(:#{attributes_method})
-          end
+      attribute_methods_module.synchronize do
+        @base_class.attributes.keys.each do |attributes_method|
+          method_name = @options[:attributes_map][attributes_method]
+          method_name = "#{@options[:prefix]}_#{method_name}" if @options[:prefix]
+          attribute_methods_module.module_eval <<-RUBY, __FILE__, __LINE__ + 1
+            def #{method_name}
+              #{path_to_attrs}.get_attribute(:#{attributes_method})
+            end
 
-          def #{method_name}=(other)
-            fail ApiReadOnlyMethod.new('#{method_name}')
-          end
-        RUBY
+            def #{method_name}=(other)
+              fail ApiReadOnlyMethod.new('#{method_name}')
+            end
+          RUBY
+        end
       end
+      attribute_methods_module.freeze
       attribute_methods_module
     end
 
